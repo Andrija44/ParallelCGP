@@ -1,5 +1,5 @@
-#ifndef PROBLEM
-#define PROBLEM
+#ifndef PROBLEM_H
+#define PROBLEM_H
 #define TYPE double
 
 #include "CGPIndividual.h"

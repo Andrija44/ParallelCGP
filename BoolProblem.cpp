@@ -76,7 +76,7 @@ void BoolProblem::problemSimulator() {
     CGPIndividual ind;
 
     vector<CGPIndividual> population;
-    int bestInd = 0, generacija = 0, brEvaluacija = 0;
+    int bestInd = 0, generacija = 0;
 
     population = cgp.generatePopulation();
 
@@ -89,7 +89,7 @@ void BoolProblem::problemSimulator() {
 
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
-            int fit = 0;
+            TYPE fit = 0;
             problemController(population[clan], fit);
 
             if (fit > bestFit) {
@@ -116,21 +116,9 @@ void BoolProblem::problemSimulator() {
             population = cgp.goldMutate(population[bestInd]);
     }
 
-    //try {
-    //    ofstream outFile(bestFile);
-    //    if (outFile.is_open()) {
-    //        outFile << population[bestInd];
-    //        outFile.close();
-    //        std::cout << "CGP written to text file." << endl;
-    //    }
-    //}
-    //catch (const exception& e) {
-    //    cerr << "Error writing CGP: " << e.what() << endl;
-    //}
-
     bestI = population[bestInd];
 
-    printFunction();
-
     isSimulated = true;
+
+    printFunction();
 }

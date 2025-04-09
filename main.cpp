@@ -4,16 +4,16 @@
 #include <vector>
 #include <cstdlib> 
 #include <ctime>
-#include "Problem.h"
 #include "BoolProblem.h"
+#include "FuncProblem.h"
 
 using namespace std;
 using namespace parallel_cgp;
 
 int main() {
-    BoolProblem bp;
+    FuncProblem fp;
 
-    bp.problemSimulator();
+    fp.problemSimulator();
 
     return 0;
 }
