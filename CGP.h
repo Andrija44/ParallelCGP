@@ -7,33 +7,12 @@
 #include "CGPIndividual.h"
 
 namespace parallel_cgp {
-    const int MAX_MAP_SIZE = 5000;
-    const int BI_OPERANDS = 5;
-    const int NUM_OPERANDS = 9;
-    const int VIEW_DISTANCE = 13;
-
-    const int GENERATIONS = 5000;
-    const int ROWS = 20;
-    const int COLUMNS = 20;
-    const int LEVELS_BACK = 3;
-    const int INPUTS = 6;
-    const int OUTPUTS = 1;
-    const int MUTATIONS = 6;
-    /**
-     * Broj jedinki u generaciji.
-     */
-    const int POPULATION = 20;
-    /**
-     * Naziv datoteke koja sadrzi najbolju jedinku.
-     */
-    const std::string bestFile = "CGP_best.txt";
-
     /**
      * Klasa koja opisuje CGP instancu.
      */
     class CGP {
     private:
-        int generations, rows, columns, levelsBack, inputs, outputs, mutations;
+        int generations, rows, columns, levelsBack, inputs, outputs, mutations, operands, biOperands, populationSize;
     public:
         /**
          * Konstruktor za CGP klasu.
@@ -46,16 +25,16 @@ namespace parallel_cgp {
          * @param[in] mutations     Broj mutacija genoma po jedinki.
          * @param[in] window        Trenutno otvoreni SFML prozor.
          */
-        CGP(int generations, int rows, int columns, int levelsBack, int inputs, int outputs, int mutations)
-            : generations(generations), rows(rows), columns(columns), levelsBack(levelsBack), inputs(inputs), outputs(outputs), mutations(mutations) {
-        };
+        CGP(int generations, int rows, int columns, int levelsBack, int inputs, int outputs, int mutations, int operands, int biOperands, int populationSize)
+            : generations(generations), rows(rows), columns(columns), levelsBack(levelsBack), inputs(inputs), outputs(outputs), mutations(mutations), 
+                operands(operands), biOperands(biOperands), populationSize(populationSize) {};
 
         /**
          * Funkcija za generiranje inicijalne populacije.<br>
-         * Broj jedinki u populaciji ovisi o konstanti POPULATION.<br>
+         * Broj jedinki u populaciji ovisi o konstanti POPULATION_SIZE.<br>
          * Ostali parametri su navedeni u konstruktoru.
          */
-        std::vector<CGPIndividual> generatePopulation(int rows, int columns, int levelsBack, int inputs, int outputs);
+        std::vector<CGPIndividual> generatePopulation();
 
         /**
          * Funkcija za kreiranje nove generacije populacije na bazi roditeljske jedinke.<br>
@@ -64,7 +43,7 @@ namespace parallel_cgp {
          * @param[in] numMut    Broj mutacija gena po jedinki.
          * @param[in] parent    Najbolja jedinka iz prosle generacija, roditelj za novu.
          */
-        std::vector<CGPIndividual> mutate(int numMut, CGPIndividual parent);
+        std::vector<CGPIndividual> pointMutate(CGPIndividual parent);
 
         /**
          * Funkcija za kreiranje nove generacije populacije na bazi roditeljske jedinke.<br>
@@ -73,7 +52,7 @@ namespace parallel_cgp {
          * Taj gen se jos promjeni i s njime zavrsava mutacija nove jedinke.
          * @param[in] parent    Najbolja jedinka iz prosle generacija, roditelj za novu.
          */
-        std::vector<CGPIndividual> mutate(CGPIndividual parent);
+        std::vector<CGPIndividual> goldMutate(CGPIndividual parent);
     };
 }
 

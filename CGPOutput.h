@@ -4,8 +4,6 @@
 #include <fstream>
 #include <string>
 
-#define TYPE double
-
 namespace parallel_cgp {
     /**
      * Struktura koja opisuje izlazne gene CGP jedinke.

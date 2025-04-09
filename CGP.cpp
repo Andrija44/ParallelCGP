@@ -11,14 +11,14 @@
 using namespace std;
 using namespace parallel_cgp;
 
-vector<CGPIndividual> CGP::generatePopulation(int rows, int columns, int levelsBack, int inputs, int outputs) {
+vector<CGPIndividual> CGP::generatePopulation() {
     vector<CGPIndividual> population;
 
-    for (int i = 0; i < POPULATION; i++) {
+    for (int i = 0; i < populationSize; i++) {
         random_device rd;
         mt19937 gen(rd());
 
-        uniform_int_distribution<> operandDis(1, NUM_OPERANDS);
+        uniform_int_distribution<> operandDis(1, operands);
         uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
         uniform_int_distribution<> outputDis(0, rows * columns + inputs - 1);
 
@@ -54,7 +54,7 @@ vector<CGPIndividual> CGP::generatePopulation(int rows, int columns, int levelsB
                     break;
             }
 
-            node.connection2 = (node.operand >= BI_OPERANDS) ? -1 : connectionDis(gen);
+            node.connection2 = (node.operand >= biOperands) ? -1 : connectionDis(gen);
 
             while (true) {
                 if (node.connection2 < inputs)
@@ -92,7 +92,7 @@ vector<CGPIndividual> CGP::generatePopulation(int rows, int columns, int levelsB
 }
 
 // point mutacija
-vector<CGPIndividual> CGP::mutate(int numMut, CGPIndividual parent) {
+vector<CGPIndividual> CGP::pointMutate(CGPIndividual parent) {
     vector<CGPIndividual> population;
     if (!parent.evalDone)
         parent.evaluateUsed();
@@ -101,20 +101,20 @@ vector<CGPIndividual> CGP::mutate(int numMut, CGPIndividual parent) {
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<> nodDis(parent.inputs, parent.genes.size());
+    uniform_int_distribution<> nodDis(parent.inputs, (int) parent.genes.size());
     uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0, parent.genes.size() - 1);
-    uniform_int_distribution<> operandDis(1, NUM_OPERANDS);
+    uniform_int_distribution<> connectionDis(0, (int) parent.genes.size() - 1);
+    uniform_int_distribution<> operandDis(1, operands);
     uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
-    for (int n = 0; n < POPULATION - 1; n++) {
+    for (int n = 0; n < populationSize - 1; n++) {
         vector<CGPNode> genes = parent.genes;
         vector<CGPOutput> outputGene = parent.outputGene;
 
         for (int z = parent.inputs; z < genes.size(); z++)
             genes[z].used = false;
 
-        for (int i = 0; i < numMut; i++) {
+        for (int i = 0; i < mutations; i++) {
             int mut = geneDis(gen);
             int cell = nodDis(gen);
             if (cell == parent.genes.size()) {
@@ -128,7 +128,7 @@ vector<CGPIndividual> CGP::mutate(int numMut, CGPIndividual parent) {
             else if (mut == 2)
                 genes[cell].connection2 = connectionDis(gen);
 
-            genes[cell].connection2 = (genes[cell].operand >= BI_OPERANDS) ? -1 : connectionDis(gen);
+            genes[cell].connection2 = (genes[cell].operand >= biOperands) ? -1 : connectionDis(gen);
 
             while (true) {
                 if (genes[cell].connection1 < parent.inputs)
@@ -162,7 +162,7 @@ vector<CGPIndividual> CGP::mutate(int numMut, CGPIndividual parent) {
 }
 
 // goldman mutacija
-vector<CGPIndividual> CGP::mutate(CGPIndividual parent) {
+vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
     vector<CGPIndividual> population;
     if (!parent.evalDone)
         parent.evaluateUsed();
@@ -171,14 +171,14 @@ vector<CGPIndividual> CGP::mutate(CGPIndividual parent) {
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<> nodDis(parent.inputs, parent.genes.size());
+    uniform_int_distribution<> nodDis(parent.inputs, (int) parent.genes.size());
     uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0, parent.genes.size() - 1);
-    uniform_int_distribution<> operandDis(1, NUM_OPERANDS);
+    uniform_int_distribution<> connectionDis(0,(int) parent.genes.size() - 1);
+    uniform_int_distribution<> operandDis(1, operands);
     uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
     #pragma omp parallel for
-    for (int n = 0; n < POPULATION - 1; n++) {
+    for (int n = 0; n < populationSize - 1; n++) {
         vector<CGPNode> genes = parent.genes;
         vector<CGPOutput> outputGene = parent.outputGene;
         bool isActive = false;
@@ -193,14 +193,14 @@ vector<CGPIndividual> CGP::mutate(CGPIndividual parent) {
             if (mut == 0) {
                 genes[cell].operand = operandDis(gen);
                 
-                if (genes[cell].operand >= BI_OPERANDS && genes[cell].connection2 != -1)
+                if (genes[cell].operand >= biOperands && genes[cell].connection2 != -1)
                     genes[cell].connection2 = -1;
-                else if (genes[cell].operand < BI_OPERANDS && genes[cell].connection2 == -1)
+                else if (genes[cell].operand < biOperands && genes[cell].connection2 == -1)
                     genes[cell].connection2 = connectionDis(gen);
             }
             else if (mut == 1)
                 genes[cell].connection1 = connectionDis(gen);
-            else if (mut == 2 && genes[cell].operand >= BI_OPERANDS)
+            else if (mut == 2 && genes[cell].operand >= biOperands)
                 continue;
             else if (mut == 2)
                 genes[cell].connection2 = connectionDis(gen);
