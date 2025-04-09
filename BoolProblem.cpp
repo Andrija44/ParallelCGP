@@ -12,10 +12,6 @@ TYPE BoolProblem::computeNode(int operand, TYPE value1, TYPE value2) {
     case 3:
         return value1 ^ value2;
     case 4:
-        return value1 << value2;
-    case 5:
-        return value1 >> value2;
-    case 6:
         return ~value1;
     default:
         return 0;
@@ -27,7 +23,10 @@ TYPE BoolProblem::fitness(bitset<INPUTS> in, int res) {
 }
 
 void BoolProblem::printFunction() {
-    cout << "Funkcija: " << evalFunction(bestI.outputGene[0].connection) << endl;
+    if (isSimulated)
+        cout << "Funkcija: " << evalFunction(bestI.outputGene[0].connection) << endl;
+    else
+        cout << "Problem nije simuliran." << endl;
 }
 
 std::string BoolProblem::evalFunction(int CGPNodeNum) {
@@ -49,12 +48,6 @@ std::string BoolProblem::evalFunction(int CGPNodeNum) {
         oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " ^ " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 4:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " << " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
-        return oss.str();
-    case 5:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " >> " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
-        return oss.str();
-    case 6:
         oss << "~" << evalFunction(bestI.genes[CGPNodeNum].connection1);
         return oss.str();
     }
@@ -138,4 +131,6 @@ void BoolProblem::problemSimulator() {
     bestI = population[bestInd];
 
     printFunction();
+
+    isSimulated = true;
 }

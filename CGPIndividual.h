@@ -58,7 +58,7 @@ namespace parallel_cgp {
         int evalDone;
 
         /**
-         * Osnovni kostruktor koji kreita praznu jedinku.
+         * Osnovni kostruktor koji kreira praznu jedinku.
          */
         CGPIndividual();
         /**

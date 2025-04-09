@@ -25,7 +25,6 @@ namespace parallel_cgp {
             os << output.connection << " " << output.value;
             return os;
         }
-
         /**
          * Operator overloading za citanje izlaznog gena iz datoteke.
          */
@@ -36,4 +35,4 @@ namespace parallel_cgp {
     };
 }
 
-#endif // !NODE_H
+#endif

@@ -37,7 +37,6 @@ namespace parallel_cgp {
             os << node.operand << " " << node.connection1 << " " << node.connection2 << " " << node.used << " " << 0;
             return os;
         }
-
         /**
          * Operator overloading za citanje gena iz datoteke.
          */
@@ -48,4 +47,4 @@ namespace parallel_cgp {
     };
 }
 
-#endif // !NODE_H
+#endif
