@@ -3,6 +3,7 @@
 #include "boolProblem/BoolProblem.h"
 #include "funcProblem/FuncProblem.h"
 #include "waitProblem/WaitProblem.h"
+#include "towerProblem/TowerProblem.h"
 
 using namespace std;
 using namespace parallel_cgp;
@@ -24,7 +25,7 @@ int main() {
     else if (choice == 2)
         problem = new FuncProblem;
     else if (choice == 3)
-        return 0;
+        problem = new TowerProblem;
     else if (choice == 4)
         problem = new WaitProblem;
     else
