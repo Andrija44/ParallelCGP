@@ -2,7 +2,7 @@
 #define PROBLEM_H
 #define TYPE double
 
-#include "CGPIndividual.h"
+#include "cgp/CGPIndividual.h"
 #include <cmath>
 #include <random>
 

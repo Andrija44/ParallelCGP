@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#define TYPE double
 
 namespace parallel_cgp {
     /**

@@ -1,13 +1,18 @@
-#ifndef FUNCPROBLEM_H
-#define FUNCPROBLEM_H
-#define TYPE double
+#ifndef BOOLPROBLEM_H
+#define BOOLPROBLEM_H
 
-#include "Problem.h"
-#include "CGP.h"
+#include "../Problem.h"
+#include "../cgp/CGP.h"
+#include <bitset>
+
+#undef TYPE
+#define TYPE int
 
 namespace parallel_cgp {
-
-	class FuncProblem : public Problem {
+	/**
+	 * Klasa koja opisuje problem pronalaska boolean funkcije.
+	 */
+	class BoolProblem : public Problem {
 	private:
 		/**
 		 * Najbolja jedinka nakon pokretanja problem simulatora.
@@ -16,16 +21,16 @@ namespace parallel_cgp {
 		/**
 		 * Naziv datoteke koja sadrzi najbolju jedinku.
 		 */
-		const std::string bestFile = "func_best.txt";
+		const std::string bestFile = "bool_best.txt";
 
 		/**
 		 * Nepromjenjivi parametri za ovaj problem.<br>
 		 * Operandi jer ovise o funkcijama.<br>
 		 * A broj inputa jer o njemu ovisi funkcija koja se trazi.
 		 */
-		const static int NUM_OPERANDS = 6;
-		const static int BI_OPERANDS = 5;
-		const static int INPUTS = 2;
+		const static int NUM_OPERANDS = 4;
+		const static int BI_OPERANDS = 4;
+		const static int INPUTS = 5;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -45,26 +50,25 @@ namespace parallel_cgp {
 		bool isSimulated = false;
 
 		/**
-		 * Funkcija koja oznacava funkciju koju CGP pokusava pronaci.
+		 * Boolean funkcija koja oznacava funkciju koju CGP pokusava pronaci.
 		 */
-		const std::function<TYPE(TYPE x, TYPE y)> func =
-			[](TYPE x, TYPE y) { return (pow(x, 2) + 2 * x * y + y); };
+		const std::function<int(std::bitset<INPUTS> in)> boolFunc = 
+			[](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & (in[0] ^ in[4] | (in[3] & ~in[2])); };
 
 		TYPE computeNode(int operand, TYPE value1, TYPE value2);
-		TYPE fitness(TYPE x, TYPE y, TYPE res);
-		void problemController(parallel_cgp::CGPIndividual& individual, TYPE& fit) override;
+		TYPE fitness(std::bitset<INPUTS> input, int res);
+		void problemController(CGPIndividual &individual, TYPE &fit);
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
 		/**
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
-		FuncProblem() {};
+		BoolProblem() {};
 		/**
-		 * Konstruktor koji prima sve promjenjive vrijednosti za func problem.
+		 * Konstruktor koji prima sve promjenjive vrijednosti za bool problem.
 		 */
-		FuncProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int OUTPUTS, int MUTATIONS, int POPULATION_SIZE)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), OUTPUTS(OUTPUTS), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {
-		};
+		BoolProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int OUTPUTS, int MUTATIONS, int POPULATION_SIZE)
+			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), OUTPUTS(OUTPUTS), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
 		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.

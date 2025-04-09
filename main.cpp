@@ -1,12 +1,7 @@
 #include <iostream>
-#include <thread>
-#include <chrono>
-#include <vector>
-#include <cstdlib> 
-#include <ctime>
 #include "Problem.h"
-#include "BoolProblem.h"
-#include "FuncProblem.h"
+#include "boolProblem/BoolProblem.h"
+#include "funcProblem/FuncProblem.h"
 
 using namespace std;
 using namespace parallel_cgp;
