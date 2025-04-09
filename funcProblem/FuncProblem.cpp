@@ -39,11 +39,11 @@ void FuncProblem::printFunction() {
         cout << "Problem nije simuliran." << endl;
 }
 
-string FuncProblem::evalFunction(int CGP1NodeNum) {
+string FuncProblem::evalFunction(int CGPNodeNum) {
     ostringstream oss;
 
-    if (CGP1NodeNum < INPUTS) {
-        switch (CGP1NodeNum) {
+    if (CGPNodeNum < INPUTS) {
+        switch (CGPNodeNum) {
         case 0:
             oss << "x";
             return oss.str();
@@ -53,33 +53,33 @@ string FuncProblem::evalFunction(int CGP1NodeNum) {
         }
     }
 
-    switch (bestI.genes[CGP1NodeNum].operand) {
+    switch (bestI.genes[CGPNodeNum].operand) {
     case 1:
-        oss << "(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << " + " << evalFunction(bestI.genes[CGP1NodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " + " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 2:
-        oss << "(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << " - " << evalFunction(bestI.genes[CGP1NodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " - " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 3:
-        oss << "(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << " * " << evalFunction(bestI.genes[CGP1NodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " * " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 4:
-        oss << "(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << " / " << evalFunction(bestI.genes[CGP1NodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " / " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 5:
-        oss << "sin(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << ")";
+        oss << "sin(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 6:
-        oss << "cos(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << ")";
+        oss << "cos(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 7:
-        oss << "sqrt(" << evalFunction(bestI.genes[CGP1NodeNum].connection1) << ")";
+        oss << "sqrt(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 8:
-        oss << evalFunction(bestI.genes[CGP1NodeNum].connection1) << "^2";
+        oss << evalFunction(bestI.genes[CGPNodeNum].connection1) << "^2";
         return oss.str();
     case 9:
-        oss << "2^" << evalFunction(bestI.genes[CGP1NodeNum].connection1);
+        oss << "2^" << evalFunction(bestI.genes[CGPNodeNum].connection1);
         return oss.str();
     }
 

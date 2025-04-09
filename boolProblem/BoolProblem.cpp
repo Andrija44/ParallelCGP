@@ -6,9 +6,9 @@ using namespace parallel_cgp;
 TYPE BoolProblem::computeNode(int operand, TYPE value1, TYPE value2) {
     switch (operand) {
     case 1:
-        return value1 + value2;
+        return value1 | value2;
     case 2:
-        return value1 - value2;
+        return value1 & value2;
     case 3:
         return value1 ^ value2;
     case 4:
@@ -19,7 +19,10 @@ TYPE BoolProblem::computeNode(int operand, TYPE value1, TYPE value2) {
 }
 
 TYPE BoolProblem::fitness(bitset<INPUTS> in, TYPE res) {
-    return boolFunc(in) == res;
+    if (useFunc)
+        return boolFunc(in) == res;
+
+    return parityFunc(in) == res;
 }
 
 void BoolProblem::printFunction() {

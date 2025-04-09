@@ -14,7 +14,7 @@ namespace parallel_cgp {
 	 * Moze se koristiti i za paritetni problem
 	 */
 	class BoolProblem : public Problem {
-	private:
+	protected:
 		/**
 		 * Najbolja jedinka nakon pokretanja problem simulatora.
 		 */
@@ -49,6 +49,10 @@ namespace parallel_cgp {
 		 * Parametar koji oznacava je li simulacija obavljena.
 		 */
 		bool isSimulated = false;
+		/**
+		 * Parametar koji oznacava koristi li se funkcija ili partiet.
+		 */
+		bool useFunc = true;
 
 		/**
 		 * Boolean funkcija koja oznacava funkciju koju CGP pokusava pronaci.
@@ -84,6 +88,17 @@ namespace parallel_cgp {
 		 * Metoda za ispis na kraju dobivene funkcije.
 		 */
 		void printFunction() override;
+	};
+
+	/**
+	 * Klasa koja opisuje problema pariteta.
+	 */
+	class ParityProblem : public BoolProblem {
+	public:
+		/**
+		 * Konstruktor koji samo mijenja koja se funkcija koristi.
+		 */
+		ParityProblem() { useFunc = false; };
 	};
 }
 

@@ -103,7 +103,7 @@ CGPIndividual CGPIndividual::deserialize(istream& is) {
         CGPNode gene;
         is >> gene;
         genes.emplace_back(gene);
-        }
+    }
 
     size_t outputGeneSize;
     is >> outputGeneSize;
