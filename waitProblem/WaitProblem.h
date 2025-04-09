@@ -54,7 +54,7 @@ namespace parallel_cgp {
 			[&]() { std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME)); };
 
 		TYPE fitness(TYPE prev) override;
-		void problemController(CGPIndividual& individual, TYPE& fit);
+		void problemSimulator(CGPIndividual& individual, TYPE& fit);
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
 		/**
@@ -70,9 +70,9 @@ namespace parallel_cgp {
 		};
 
 		/**
-		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.
+		 * Metoda za pokretanje problema.
 		 */
-		void problemSimulator() override;
+		void problemRunner() override;
 		/**
 		 * Metoda za ispis na kraju dobivene funkcije.
 		 */

@@ -30,7 +30,7 @@ int main() {
     else
         cout << "Invalid option" << endl;
 
-    problem->problemSimulator();
+    problem->problemRunner();
 
     return 0;
 }

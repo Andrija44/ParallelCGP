@@ -26,7 +26,7 @@ string WaitProblem::evalFunction(int CGPNodeNum) {
     return "";
 }
 
-void WaitProblem::problemController(CGPIndividual& individual, TYPE& fit) {
+void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
     function<TYPE(int op, TYPE v1, TYPE v2)> compNode =
         [&](int op, TYPE v1, TYPE v2) { return computeNode(op, v1, v2); };
 
@@ -39,7 +39,7 @@ void WaitProblem::problemController(CGPIndividual& individual, TYPE& fit) {
     fit = fitness(fit);
 }
 
-void WaitProblem::problemSimulator() {
+void WaitProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population;
@@ -57,7 +57,7 @@ void WaitProblem::problemSimulator() {
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
             TYPE fit = generacija;
-            problemController(population[clan], fit);
+            problemSimulator(population[clan], fit);
 
             if (fit > bestFit) {
                 bestFit = fit;
@@ -71,7 +71,7 @@ void WaitProblem::problemSimulator() {
         if (bestInds.size() > 1)
             bestInds.erase(bestInds.begin());
 
-        uniform_int_distribution<> bestDis(0, (int)bestInds.size() - 1);
+        uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size()) - 1);
 
         bestInd = bestInds[bestDis(gen)];
 

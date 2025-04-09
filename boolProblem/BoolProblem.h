@@ -10,7 +10,8 @@
 
 namespace parallel_cgp {
 	/**
-	 * Klasa koja opisuje problem pronalaska boolean funkcije.
+	 * Klasa koja opisuje problem pronalaska boolean funkcije.<br>
+	 * Moze se koristiti i za paritetni problem
 	 */
 	class BoolProblem : public Problem {
 	private:
@@ -30,7 +31,7 @@ namespace parallel_cgp {
 		 */
 		const static int NUM_OPERANDS = 4;
 		const static int BI_OPERANDS = 4;
-		const static int INPUTS = 5;
+		const static int INPUTS = 7;
 		const static int OUTPUTS = 1;
 
 		/**
@@ -38,9 +39,9 @@ namespace parallel_cgp {
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
 		int GENERATIONS = 5000;
-		int ROWS = 8;
-		int COLUMNS = 8;
-		int LEVELS_BACK = 1;
+		int ROWS = 100;
+		int COLUMNS = 20;
+		int LEVELS_BACK = 0;
 		int MUTATIONS = 0;
 		int POPULATION_SIZE = 20;
 
@@ -54,10 +55,15 @@ namespace parallel_cgp {
 		 */
 		const std::function<int(std::bitset<INPUTS> in)> boolFunc = 
 			[](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & (in[0] ^ in[4] | (in[3] & ~in[2])); };
+		/**
+		 * Parity 8bit funkcija koju CGP pokusava pronaci.
+		 */
+		const std::function<int(std::bitset<INPUTS> in)> parityFunc =
+			[](std::bitset<INPUTS> in) { return (in.count() % 2 == 0) ? 0 : 1; };
 
 		TYPE computeNode(int operand, TYPE value1, TYPE value2);
 		TYPE fitness(std::bitset<INPUTS> input, TYPE res);
-		void problemController(CGPIndividual &individual, TYPE &fit);
+		void problemSimulator(CGPIndividual &individual, TYPE &fit);
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
 		/**
@@ -71,9 +77,9 @@ namespace parallel_cgp {
 			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
-		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.
+		 * Metoda za pokretanje problema.
 		 */
-		void problemSimulator() override;
+		void problemRunner() override;
 		/**
 		 * Metoda za ispis na kraju dobivene funkcije.
 		 */

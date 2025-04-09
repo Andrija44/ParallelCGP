@@ -10,11 +10,11 @@ namespace parallel_cgp {
 	class Problem {
 	private:
         /**
-         * Metoda koja predstavlja kontroller u problemu. Koristi se u simulatoru.
+         * Metoda koja predstavlja simulator u problemu.
          * @param[in] individual    Referenca na jedinku koja se koristi.
          * @param[in] fit           Referenca na varijablu u koju se pohranjuje fitness.
          */
-		virtual void problemController(parallel_cgp::CGPIndividual &individual, TYPE &fit) {}
+		virtual void problemSimulator(parallel_cgp::CGPIndividual &individual, TYPE &fit) {}
         /**
          * Rekurzivna funkcija koja se koristi kod ispisa funckije.
          * @param[in] CGPNodeNum    Broj noda na koji je spojen output.
@@ -77,9 +77,9 @@ namespace parallel_cgp {
         virtual TYPE fitness(TYPE fit) { return fit; }
 
         /**
-         * Metoda za pokretanje simulacije, tj. za pokretanje problema.
+         * Metoda za pokretanje problema.
          */
-		virtual void problemSimulator() = 0;
+		virtual void problemRunner() = 0;
         /**
          * Metoda za ispis na kraju dobivene funkcije.
          */

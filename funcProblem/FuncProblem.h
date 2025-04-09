@@ -27,7 +27,7 @@ namespace parallel_cgp {
 		 * Operandi jer ovise o funkcijama.<br>
 		 * A broj inputa i outputa jer o njemu ovisi funkcija koja se trazi.
 		 */
-		const static int NUM_OPERANDS = 6;
+		const static int NUM_OPERANDS = 9;
 		const static int BI_OPERANDS = 5;
 		const static int INPUTS = 2;
 		const static int OUTPUTS = 1;
@@ -56,7 +56,7 @@ namespace parallel_cgp {
 
 		TYPE computeNode(int operand, TYPE value1, TYPE value2);
 		TYPE fitness(TYPE x, TYPE y, TYPE res);
-		void problemController(parallel_cgp::CGPIndividual& individual, TYPE& fit) override;
+		void problemSimulator(parallel_cgp::CGPIndividual& individual, TYPE& fit) override;
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
 		/**
@@ -70,9 +70,9 @@ namespace parallel_cgp {
 			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
-		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.
+		 * Metoda za pokretanje problema.
 		 */
-		void problemSimulator() override;
+		void problemRunner() override;
 		/**
 		 * Metoda za ispis na kraju dobivene funkcije.
 		 */

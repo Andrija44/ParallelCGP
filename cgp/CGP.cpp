@@ -101,9 +101,9 @@ vector<CGPIndividual> CGP::pointMutate(CGPIndividual parent) {
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<> nodDis(parent.inputs, (int) parent.genes.size());
+    uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
     uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0, (int) parent.genes.size() - 1);
+    uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
     uniform_int_distribution<> operandDis(1, operands);
     uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
@@ -171,9 +171,9 @@ vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<> nodDis(parent.inputs, (int) parent.genes.size());
+    uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
     uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0,(int) parent.genes.size() - 1);
+    uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
     uniform_int_distribution<> operandDis(1, operands);
     uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 

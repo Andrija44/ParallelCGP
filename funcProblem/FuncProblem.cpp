@@ -86,7 +86,7 @@ string FuncProblem::evalFunction(int CGP1NodeNum) {
     return "";
 }
 
-void FuncProblem::problemController(CGPIndividual& individual, TYPE& fit) {
+void FuncProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
     function<TYPE(int op, TYPE v1, TYPE v2)> compNode =
         [&](int op, TYPE v1, TYPE v2) { return computeNode(op, v1, v2); };
 
@@ -108,7 +108,7 @@ void FuncProblem::problemController(CGPIndividual& individual, TYPE& fit) {
     fit = sqrt(fit);
 }
 
-void FuncProblem::problemSimulator() {
+void FuncProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population;
@@ -126,7 +126,7 @@ void FuncProblem::problemSimulator() {
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
             TYPE fit = 0;
-            problemController(population[clan], fit);
+            problemSimulator(population[clan], fit);
 
             if (clan == 0)
                 bestFit = fit;
@@ -143,7 +143,7 @@ void FuncProblem::problemSimulator() {
         if (bestInds.size() > 1)
             bestInds.erase(bestInds.begin());
 
-        uniform_int_distribution<> bestDis(0, (int)bestInds.size() - 1);
+        uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size()) - 1);
 
         bestInd = bestInds[bestDis(gen)];
 

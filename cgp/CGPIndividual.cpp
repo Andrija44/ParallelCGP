@@ -149,7 +149,7 @@ void CGPIndividual::resolveLoops() {
 
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> connectionDis(0, (int) genes.size() - 1);
+    uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
 
     vector<int> CGPNodeSet;
 

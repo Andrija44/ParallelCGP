@@ -6,9 +6,9 @@ using namespace parallel_cgp;
 TYPE BoolProblem::computeNode(int operand, TYPE value1, TYPE value2) {
     switch (operand) {
     case 1:
-        return value1 | value2;
+        return value1 + value2;
     case 2:
-        return value1 & value2;
+        return value1 - value2;
     case 3:
         return value1 ^ value2;
     case 4:
@@ -55,23 +55,23 @@ string BoolProblem::evalFunction(int CGPNodeNum) {
     return "";
 }
 
-void BoolProblem::problemController(CGPIndividual& individual, TYPE &fit) {
+void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
     function<double(int op, double v1, double v2)> compNode =
-        [&](int op, double v1, double v2) { return computeNode(op, (TYPE) v1, (TYPE)v2); };
+        [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
     for (int perm = 0; perm < pow(2, INPUTS); ++perm) {
         bitset<INPUTS> bits(perm);
         vector<double> input;
 
         for (int i = 0; i < bits.size(); ++i)
-            input.push_back((double)bits[i]);
+            input.push_back(static_cast<double>(bits[i]));
 
         individual.evaluateValue(input, compNode);
-        fit += fitness(bits, (int) individual.outputGene[0].value);
+        fit += fitness(bits, static_cast<int>(individual.outputGene[0].value));
     }
 }
 
-void BoolProblem::problemSimulator() {
+void BoolProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population;
@@ -89,7 +89,7 @@ void BoolProblem::problemSimulator() {
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
             TYPE fit = 0;
-            problemController(population[clan], fit);
+            problemSimulator(population[clan], fit);
 
             if (fit > bestFit) {
                 bestFit = fit;
@@ -103,7 +103,7 @@ void BoolProblem::problemSimulator() {
         if (bestInds.size() > 1)
             bestInds.erase(bestInds.begin());
 
-        uniform_int_distribution<> bestDis(0, (int) bestInds.size() - 1);
+        uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size() - 1));
 
         bestInd = bestInds[bestDis(gen)];
 
