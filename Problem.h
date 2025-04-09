@@ -10,6 +10,18 @@ namespace parallel_cgp {
 	class Problem {
 	private:
         /**
+         * Metoda koja predstavlja kontroller u problemu. Koristi se u simulatoru.
+         * @param[in] individual    Referenca na jedinku koja se koristi.
+         * @param[in] fit           Referenca na varijablu u koju se pohranjuje fitness.
+         */
+		virtual void problemController(parallel_cgp::CGPIndividual &individual, TYPE &fit) {}
+        /**
+         * Rekurzivna funkcija koja se koristi kod ispisa funckije.
+         * @param[in] CGPNodeNum    Broj noda na koji je spojen output.
+         */
+        virtual std::string evalFunction(int CGPNodeNum) = 0;
+	public:
+        /**
          * Naziv datoteke koja sadrzi najbolju jedinku.
          */
         std::string bestFile = "problem_best.txt";
@@ -63,18 +75,7 @@ namespace parallel_cgp {
          * Funkcija koja se koristi za izracun fitnessa za odredenu jedinku.
          */
         virtual TYPE fitness(TYPE fit) { return fit; }
-        /**
-         * Metoda koja predstavlja kontroller u problemu. Koristi se u simulatoru.
-         * @param[in] individual    Referenca na jedinku koja se koristi.
-         * @param[in] fit           Referenca na varijablu u koju se pohranjuje fitness.
-         */
-		virtual void problemController(parallel_cgp::CGPIndividual &individual, TYPE &fit) {}
-        /**
-         * Rekurzivna funkcija koja se koristi kod ispisa funckije.
-         * @param[in] CGPNodeNum    Broj noda na koji je spojen output.
-         */
-        virtual std::string evalFunction(int CGPNodeNum) = 0;
-	public:
+
         /**
          * Metoda za pokretanje simulacije, tj. za pokretanje problema.
          */

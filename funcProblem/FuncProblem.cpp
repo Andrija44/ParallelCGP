@@ -39,8 +39,8 @@ void FuncProblem::printFunction() {
         cout << "Problem nije simuliran." << endl;
 }
 
-std::string FuncProblem::evalFunction(int CGP1NodeNum) {
-    std::ostringstream oss;
+string FuncProblem::evalFunction(int CGP1NodeNum) {
+    ostringstream oss;
 
     if (CGP1NodeNum < INPUTS) {
         switch (CGP1NodeNum) {
@@ -110,7 +110,6 @@ void FuncProblem::problemController(CGPIndividual& individual, TYPE& fit) {
 
 void FuncProblem::problemSimulator() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
-    CGPIndividual ind;
 
     vector<CGPIndividual> population;
     int bestInd = 0, generacija = 0;
@@ -148,7 +147,7 @@ void FuncProblem::problemSimulator() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        std::cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
         if (bestFit <= 5)
             break;

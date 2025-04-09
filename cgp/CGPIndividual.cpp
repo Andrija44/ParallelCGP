@@ -90,14 +90,14 @@ void CGPIndividual::clearInd() {
         genes[i].outValue = NAN;
 }
 
-CGPIndividual CGPIndividual::deserialize(std::istream& is) {
+CGPIndividual CGPIndividual::deserialize(istream& is) {
     int rows, columns, levelsBack, inputs, outputs, evalDone;
 
     is >> rows >> columns >> levelsBack >> inputs >> outputs >> evalDone;
 
     size_t genesSize;
     is >> genesSize;
-    std::vector<CGPNode> genes;
+    vector<CGPNode> genes;
     genes.reserve(genesSize);
     for (size_t i = 0; i < genesSize; ++i) {
         CGPNode gene;
@@ -107,7 +107,7 @@ CGPIndividual CGPIndividual::deserialize(std::istream& is) {
 
     size_t outputGeneSize;
     is >> outputGeneSize;
-    std::vector<CGPOutput> outputGene;
+    vector<CGPOutput> outputGene;
     outputGene.reserve(outputGeneSize);
     for (size_t i = 0; i < outputGeneSize; ++i) {
         CGPOutput outGene;
@@ -115,16 +115,16 @@ CGPIndividual CGPIndividual::deserialize(std::istream& is) {
         outputGene.emplace_back(outGene);
     }
 
-    return CGPIndividual(std::move(genes), std::move(outputGene), rows, columns, levelsBack, inputs, outputs, evalDone);
+    return CGPIndividual(move(genes), move(outputGene), rows, columns, levelsBack, inputs, outputs, evalDone);
 }
 
-bool CGPIndividual::findLoops(int CGPNodeNum, std::vector<int> CGPNodeSet) {
+bool CGPIndividual::findLoops(int CGPNodeNum, vector<int> CGPNodeSet) {
     branches.clear();
 
     return loopFinder(CGPNodeNum, CGPNodeSet);;
 }
 
-bool CGPIndividual::loopFinder(int CGPNodeNum, std::vector<int> CGPNodeSet) {
+bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
 
     for (int i = 0; i < CGPNodeSet.size(); i++)
         if (CGPNodeSet[i] == CGPNodeNum) {

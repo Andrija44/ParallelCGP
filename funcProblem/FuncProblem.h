@@ -1,12 +1,16 @@
 #ifndef FUNCPROBLEM_H
 #define FUNCPROBLEM_H
-#define TYPE double
 
 #include "../Problem.h"
 #include "../cgp/CGP.h"
 
-namespace parallel_cgp {
+#undef TYPE
+#define TYPE double
 
+namespace parallel_cgp {
+	/**
+	 * Klasa koja opisuje problem pronalaska funkcije.
+	 */
 	class FuncProblem : public Problem {
 	private:
 		/**
@@ -21,11 +25,12 @@ namespace parallel_cgp {
 		/**
 		 * Nepromjenjivi parametri za ovaj problem.<br>
 		 * Operandi jer ovise o funkcijama.<br>
-		 * A broj inputa jer o njemu ovisi funkcija koja se trazi.
+		 * A broj inputa i outputa jer o njemu ovisi funkcija koja se trazi.
 		 */
 		const static int NUM_OPERANDS = 6;
 		const static int BI_OPERANDS = 5;
 		const static int INPUTS = 2;
+		const static int OUTPUTS = 1;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -35,7 +40,6 @@ namespace parallel_cgp {
 		int ROWS = 8;
 		int COLUMNS = 8;
 		int LEVELS_BACK = 1;
-		int OUTPUTS = 1;
 		int MUTATIONS = 0;
 		int POPULATION_SIZE = 20;
 
@@ -62,9 +66,8 @@ namespace parallel_cgp {
 		/**
 		 * Konstruktor koji prima sve promjenjive vrijednosti za func problem.
 		 */
-		FuncProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int OUTPUTS, int MUTATIONS, int POPULATION_SIZE)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), OUTPUTS(OUTPUTS), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {
-		};
+		FuncProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int MUTATIONS, int POPULATION_SIZE)
+			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
 		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.

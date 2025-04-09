@@ -84,9 +84,9 @@ vector<CGPIndividual> CGP::generatePopulation() {
         individual.resolveLoops();
         population.push_back(individual);
 
-        std::cout << "|";
+        cout << "|";
     }
-    std::cout << endl;
+    cout << endl;
 
     return population;
 }

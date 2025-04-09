@@ -26,11 +26,12 @@ namespace parallel_cgp {
 		/**
 		 * Nepromjenjivi parametri za ovaj problem.<br>
 		 * Operandi jer ovise o funkcijama.<br>
-		 * A broj inputa jer o njemu ovisi funkcija koja se trazi.
+		 * A broj inputa i outputa jer o njemu ovisi funkcija koja se trazi.
 		 */
 		const static int NUM_OPERANDS = 4;
 		const static int BI_OPERANDS = 4;
 		const static int INPUTS = 5;
+		const static int OUTPUTS = 1;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -40,7 +41,6 @@ namespace parallel_cgp {
 		int ROWS = 8;
 		int COLUMNS = 8;
 		int LEVELS_BACK = 1;
-		int OUTPUTS = 1;
 		int MUTATIONS = 0;
 		int POPULATION_SIZE = 20;
 
@@ -56,7 +56,7 @@ namespace parallel_cgp {
 			[](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & (in[0] ^ in[4] | (in[3] & ~in[2])); };
 
 		TYPE computeNode(int operand, TYPE value1, TYPE value2);
-		TYPE fitness(std::bitset<INPUTS> input, int res);
+		TYPE fitness(std::bitset<INPUTS> input, TYPE res);
 		void problemController(CGPIndividual &individual, TYPE &fit);
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
@@ -67,8 +67,8 @@ namespace parallel_cgp {
 		/**
 		 * Konstruktor koji prima sve promjenjive vrijednosti za bool problem.
 		 */
-		BoolProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int OUTPUTS, int MUTATIONS, int POPULATION_SIZE)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), OUTPUTS(OUTPUTS), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
+		BoolProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int MUTATIONS, int POPULATION_SIZE)
+			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
 		 * Metoda za pokretanje simulacije, tj. za pokretanje problema.

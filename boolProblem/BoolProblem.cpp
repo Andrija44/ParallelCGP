@@ -18,7 +18,7 @@ TYPE BoolProblem::computeNode(int operand, TYPE value1, TYPE value2) {
     }
 }
 
-TYPE BoolProblem::fitness(bitset<INPUTS> in, int res) {
+TYPE BoolProblem::fitness(bitset<INPUTS> in, TYPE res) {
     return boolFunc(in) == res;
 }
 
@@ -29,8 +29,8 @@ void BoolProblem::printFunction() {
         cout << "Problem nije simuliran." << endl;
 }
 
-std::string BoolProblem::evalFunction(int CGPNodeNum) {
-    std::ostringstream oss;
+string BoolProblem::evalFunction(int CGPNodeNum) {
+    ostringstream oss;
 
     if (CGPNodeNum < INPUTS) {
         oss << "bit[" << CGPNodeNum << "]";
@@ -57,7 +57,7 @@ std::string BoolProblem::evalFunction(int CGPNodeNum) {
 
 void BoolProblem::problemController(CGPIndividual& individual, TYPE &fit) {
     function<double(int op, double v1, double v2)> compNode =
-        [&](int op, double v1, double v2) { return computeNode(op, (int)v1, (int)v2); };
+        [&](int op, double v1, double v2) { return computeNode(op, (TYPE) v1, (TYPE)v2); };
 
     for (int perm = 0; perm < pow(2, INPUTS); ++perm) {
         bitset<INPUTS> bits(perm);
@@ -73,7 +73,6 @@ void BoolProblem::problemController(CGPIndividual& individual, TYPE &fit) {
 
 void BoolProblem::problemSimulator() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
-    CGPIndividual ind;
 
     vector<CGPIndividual> population;
     int bestInd = 0, generacija = 0;
@@ -108,7 +107,7 @@ void BoolProblem::problemSimulator() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        std::cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
         if (bestFit == pow(2, INPUTS))
             break;
