@@ -177,7 +177,6 @@ vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
     uniform_int_distribution<> operandDis(1, operands);
     uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
-    #pragma omp parallel for
     for (int n = 0; n < populationSize - 1; n++) {
         vector<CGPNode> genes = parent.genes;
         vector<CGPOutput> outputGene = parent.outputGene;
@@ -236,7 +235,6 @@ vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
         CGPIndividual individual(genes, outputGene, parent.rows, parent.columns, parent.levelsBack, parent.inputs, parent.outputs);
         individual.resolveLoops();
 
-        #pragma omp critical
         population.push_back(individual);
     }
 

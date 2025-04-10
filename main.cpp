@@ -1,9 +1,11 @@
-#include <iostream>
 #include "Problem.h"
 #include "boolProblem/BoolProblem.h"
 #include "funcProblem/FuncProblem.h"
 #include "waitProblem/WaitProblem.h"
 #include "adProblem/ADProblem.h"
+
+#include <iostream>
+#include <omp.h>
 
 using namespace std;
 using namespace parallel_cgp;
@@ -18,6 +20,8 @@ int main() {
     cout << "5 - Wait problem" << endl;
     cout << endl << "Enter your choice: ";
     cin >> choice;
+
+    double startTime = omp_get_wtime();
 
     Problem* problem = nullptr;
 
@@ -35,6 +39,8 @@ int main() {
         cout << "Invalid option" << endl;
 
     problem->problemRunner();
+
+    cout << "Time to run: " << (omp_get_wtime() - startTime) << endl;
 
     return 0;
 }

@@ -79,7 +79,7 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
     double avgCash = 0;
 
     for (int i = 0; i < CARD_SETS; i++) {
-        card = sets[i].back();
+        card = static_cast<int>(sets[i].back());
 
         if (card > sets[i].at(0) && card < sets[i].at(1))
             win = 1;
@@ -198,7 +198,7 @@ void ADProblem::playGame() {
         for (int i = 0; i < 3; i++)
             input.push_back(static_cast<TYPE>(cardDis(gen)));
 
-        card = input.back();
+        card = card = static_cast<int>(input.back());;
         input.pop_back();
 
         sort(input.begin(), input.end());
