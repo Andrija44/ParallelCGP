@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <omp.h>
 #include "CGPIndividual.h"
 
 namespace parallel_cgp {
@@ -36,7 +37,7 @@ namespace parallel_cgp {
          * Broj jedinki u populaciji ovisi o konstanti POPULATION_SIZE.<br>
          * Ostali parametri su navedeni u konstruktoru.
          */
-        std::vector<CGPIndividual> generatePopulation();
+        void generatePopulation(std::vector<CGPIndividual> &population);
 
         /**
          * Funkcija za kreiranje nove generacije populacije na bazi roditeljske jedinke.<br>

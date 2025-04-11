@@ -42,10 +42,10 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 void WaitProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
-    vector<CGPIndividual> population;
+    vector<CGPIndividual> population(POPULATION_SIZE);
     int bestInd = 0, generacija = 0;
 
-    population = cgp.generatePopulation();
+    cgp.generatePopulation(population);
 
     for (generacija = 0; generacija < GENERATIONS; generacija++) {
         TYPE bestFit = 0;
@@ -83,7 +83,7 @@ void WaitProblem::problemRunner() {
             population = cgp.goldMutate(population[bestInd]);
     }
 
-    bestI = population[bestInd];
+    bestI = &population[bestInd];
 
     isSimulated = true;
 

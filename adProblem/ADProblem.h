@@ -14,10 +14,6 @@ namespace parallel_cgp {
 	class ADProblem : public Problem {
 	private:
 		/**
-		 * Najbolja jedinka nakon pokretanja problem simulatora.
-		 */
-		CGPIndividual bestI;
-		/**
 		 * Naziv datoteke koja sadrzi najbolju jedinku.
 		 */
 		const std::string bestFile = "ad_best.txt";

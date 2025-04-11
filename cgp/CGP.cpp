@@ -1,4 +1,5 @@
 #include "CGP.h"
+#include "../Timer.h"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -11,10 +12,14 @@
 using namespace std;
 using namespace parallel_cgp;
 
-vector<CGPIndividual> CGP::generatePopulation() {
-    vector<CGPIndividual> population;
+void CGP::generatePopulation(vector<CGPIndividual> &population) {
+    // vrijeme za izvodenje cijele funkcije
+    Timer genTime("generatePopulationTime");
 
     for (int i = 0; i < populationSize; i++) {
+        // vrijeme za generiranje svih jedinke
+        Timer indTime("individualGenerationTime");
+
         random_device rd;
         mt19937 gen(rd());
 
@@ -68,7 +73,6 @@ vector<CGPIndividual> CGP::generatePopulation() {
                 else
                     break;
             }
-
             genes.push_back(node);
         }
 
@@ -76,22 +80,20 @@ vector<CGPIndividual> CGP::generatePopulation() {
             CGPOutput output;
 
             output.connection = outputDis(gen);
-
             outputGene.push_back(output);
         }
 
         CGPIndividual individual(genes, outputGene, rows, columns, levelsBack, inputs, outputs);
         individual.resolveLoops();
-        population.push_back(individual);
 
-        cout << "|";
+        population[i] = individual;
+
+        indTime.endTimer();
     }
-    cout << endl;
 
-    return population;
+    genTime.endTimer();
 }
 
-// point mutacija
 vector<CGPIndividual> CGP::pointMutate(CGPIndividual parent) {
     vector<CGPIndividual> population;
     if (!parent.evalDone)
@@ -161,7 +163,6 @@ vector<CGPIndividual> CGP::pointMutate(CGPIndividual parent) {
     return population;
 }
 
-// goldman mutacija
 vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
     vector<CGPIndividual> population;
     if (!parent.evalDone)

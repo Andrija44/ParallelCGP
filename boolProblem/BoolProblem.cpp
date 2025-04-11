@@ -27,7 +27,7 @@ TYPE BoolProblem::fitness(bitset<INPUTS> in, TYPE res) {
 
 void BoolProblem::printFunction() {
     if (isSimulated)
-        cout << "Funkcija: " << evalFunction(bestI.outputGene[0].connection) << endl;
+        cout << "Funkcija: " << evalFunction(bestI->outputGene[0].connection) << endl;
     else
         cout << "Problem nije simuliran." << endl;
 }
@@ -40,18 +40,18 @@ string BoolProblem::evalFunction(int CGPNodeNum) {
         return oss.str();
     }
 
-    switch (bestI.genes[CGPNodeNum].operand) {
+    switch (bestI->genes[CGPNodeNum].operand) {
     case 1:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " | " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " | " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 2:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " & " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " & " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 3:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " ^ " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " ^ " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 4:
-        oss << "~" << evalFunction(bestI.genes[CGPNodeNum].connection1);
+        oss << "~" << evalFunction(bestI->genes[CGPNodeNum].connection1);
         return oss.str();
     }
 
@@ -77,13 +77,13 @@ void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
 void BoolProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
-    vector<CGPIndividual> population;
+    vector<CGPIndividual> population(POPULATION_SIZE);
     int bestInd = 0, generacija = 0;
 
-    population = cgp.generatePopulation();
+    cgp.generatePopulation(population);
 
     for (generacija = 0; generacija < GENERATIONS; generacija++) {
-        TYPE bestFit = -1;
+        TYPE bestFit = INT_MIN;
         bestInd = 0;
         vector<int> bestInds;
         random_device rd;
@@ -118,7 +118,7 @@ void BoolProblem::problemRunner() {
             population = cgp.goldMutate(population[bestInd]);
     }
 
-    bestI = population[bestInd];
+    bestI = &population[bestInd];
 
     isSimulated = true;
 

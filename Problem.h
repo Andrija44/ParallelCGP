@@ -5,6 +5,8 @@
 #include "cgp/CGPIndividual.h"
 #include <cmath>
 #include <random>
+#include <cfloat>
+#include <climits>
 
 namespace parallel_cgp {
 	class Problem {
@@ -21,6 +23,14 @@ namespace parallel_cgp {
          */
         virtual std::string evalFunction(int CGPNodeNum) = 0;
 	public:
+        /**
+         * Destruktor Problem objekata.
+         */
+        virtual ~Problem() = default;
+        /**
+         * Najbolja jedinka nakon pokretanja problem simulatora.
+         */
+        CGPIndividual *bestI;
         /**
          * Naziv datoteke koja sadrzi najbolju jedinku.
          */

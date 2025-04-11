@@ -1,4 +1,5 @@
 #include "Problem.h"
+#include "Timer.h"
 #include "boolProblem/BoolProblem.h"
 #include "funcProblem/FuncProblem.h"
 #include "waitProblem/WaitProblem.h"
@@ -21,7 +22,7 @@ int main() {
     cout << endl << "Enter your choice: ";
     cin >> choice;
 
-    double startTime = omp_get_wtime();
+    Timer mainTime("mainTimer");
 
     Problem* problem = nullptr;
 
@@ -35,12 +36,16 @@ int main() {
         problem = new ADProblem;
     else if (choice == 5)
         problem = new WaitProblem;
-    else
+    else {
         cout << "Invalid option" << endl;
+        return 1;
+    }
 
     problem->problemRunner();
+    delete(problem);
 
-    cout << "Time to run: " << (omp_get_wtime() - startTime) << endl;
+    mainTime.endTimer();
+    Timer::printTimes();
 
     return 0;
 }

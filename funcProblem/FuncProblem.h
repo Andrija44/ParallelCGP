@@ -14,10 +14,6 @@ namespace parallel_cgp {
 	class FuncProblem : public Problem {
 	private:
 		/**
-		 * Najbolja jedinka nakon pokretanja problem simulatora.
-		 */
-		CGPIndividual bestI;
-		/**
 		 * Naziv datoteke koja sadrzi najbolju jedinku.
 		 */
 		const std::string bestFile = "func_best.txt";
@@ -31,6 +27,7 @@ namespace parallel_cgp {
 		const static int BI_OPERANDS = 5;
 		const static int INPUTS = 2;
 		const static int OUTPUTS = 1;
+		const static int THRESHOLD = 40;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -54,7 +51,7 @@ namespace parallel_cgp {
 		const std::function<TYPE(TYPE x, TYPE y)> func =
 			[](TYPE x, TYPE y) { return (pow(x, 2) + 2 * x * y + y); };
 
-		TYPE computeNode(int operand, TYPE value1, TYPE value2);
+		TYPE computeNode(int operand, TYPE value1, TYPE value2) override;
 		TYPE fitness(TYPE x, TYPE y, TYPE res);
 		void problemSimulator(parallel_cgp::CGPIndividual& individual, TYPE& fit) override;
 		std::string evalFunction(int CGPNodeNum) override;

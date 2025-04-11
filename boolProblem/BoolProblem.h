@@ -16,10 +16,6 @@ namespace parallel_cgp {
 	class BoolProblem : public Problem {
 	protected:
 		/**
-		 * Najbolja jedinka nakon pokretanja problem simulatora.
-		 */
-		CGPIndividual bestI;
-		/**
 		 * Naziv datoteke koja sadrzi najbolju jedinku.
 		 */
 		const std::string bestFile = "bool_best.txt";
@@ -39,9 +35,9 @@ namespace parallel_cgp {
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
 		int GENERATIONS = 5000;
-		int ROWS = 100;
-		int COLUMNS = 20;
-		int LEVELS_BACK = 0;
+		int ROWS = 15;
+		int COLUMNS = 15;
+		int LEVELS_BACK = 2;
 		int MUTATIONS = 0;
 		int POPULATION_SIZE = 20;
 

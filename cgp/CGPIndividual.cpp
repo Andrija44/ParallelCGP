@@ -8,6 +8,14 @@ using namespace std;
 using namespace parallel_cgp;
 
 CGPIndividual::CGPIndividual() {
+    vector<vector<int>> branches;
+    this->branches = branches;
+    this->rows = 0;
+    this->columns = 0;
+    this->levelsBack = 0;
+    this->inputs = 0;
+    this->outputs = 0;
+    this->evalDone = false;
 }
 
 CGPIndividual::CGPIndividual(vector<CGPNode> genes, vector<CGPOutput> outputGene, int rows, int columns, int levelsBack, int inputs, int outputs) {
@@ -115,7 +123,7 @@ CGPIndividual CGPIndividual::deserialize(istream& is) {
         outputGene.emplace_back(outGene);
     }
 
-    return CGPIndividual(move(genes), move(outputGene), rows, columns, levelsBack, inputs, outputs, evalDone);
+    return CGPIndividual(genes, outputGene, rows, columns, levelsBack, inputs, outputs, evalDone);
 }
 
 bool CGPIndividual::findLoops(int CGPNodeNum, vector<int> CGPNodeSet) {

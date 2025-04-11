@@ -16,10 +16,6 @@ namespace parallel_cgp {
 	class WaitProblem : public Problem {
 	private:
 		/**
-		 * Najbolja jedinka nakon pokretanja problem simulatora.
-		 */
-		CGPIndividual bestI;
-		/**
 		 * Naziv datoteke koja sadrzi najbolju jedinku.
 		 */
 		const std::string bestFile = "wait_best.txt";
@@ -54,7 +50,7 @@ namespace parallel_cgp {
 			[&]() { std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME)); };
 
 		TYPE fitness(TYPE prev) override;
-		void problemSimulator(CGPIndividual& individual, TYPE& fit);
+		void problemSimulator(CGPIndividual& individual, TYPE& fit) override;
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
 		/**

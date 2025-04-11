@@ -34,7 +34,7 @@ TYPE FuncProblem::fitness(TYPE x, TYPE y, TYPE res) {
 
 void FuncProblem::printFunction() {
     if (isSimulated)
-        cout << "Funkcija: " << evalFunction(bestI.outputGene[0].connection) << endl;
+        cout << "Funkcija: " << evalFunction(bestI->outputGene[0].connection) << endl;
     else
         cout << "Problem nije simuliran." << endl;
 }
@@ -53,33 +53,33 @@ string FuncProblem::evalFunction(int CGPNodeNum) {
         }
     }
 
-    switch (bestI.genes[CGPNodeNum].operand) {
+    switch (bestI->genes[CGPNodeNum].operand) {
     case 1:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " + " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " + " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 2:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " - " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " - " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 3:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " * " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " * " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 4:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " / " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " / " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 5:
-        oss << "sin(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
+        oss << "sin(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 6:
-        oss << "cos(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
+        oss << "cos(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 7:
-        oss << "sqrt(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << ")";
+        oss << "sqrt(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << ")";
         return oss.str();
     case 8:
-        oss << evalFunction(bestI.genes[CGPNodeNum].connection1) << "^2";
+        oss << evalFunction(bestI->genes[CGPNodeNum].connection1) << "^2";
         return oss.str();
     case 9:
-        oss << "2^" << evalFunction(bestI.genes[CGPNodeNum].connection1);
+        oss << "2^" << evalFunction(bestI->genes[CGPNodeNum].connection1);
         return oss.str();
     }
 
@@ -111,13 +111,13 @@ void FuncProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 void FuncProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
-    vector<CGPIndividual> population;
+    vector<CGPIndividual> population(POPULATION_SIZE);
     int bestInd = 0, generacija = 0;
 
-    population = cgp.generatePopulation();
+    cgp.generatePopulation(population);
 
     for (generacija = 0; generacija < GENERATIONS; generacija++) {
-        TYPE bestFit = 0;
+        TYPE bestFit = DBL_MAX;
         bestInd = 0;
         vector<int> bestInds;
         random_device rd;
@@ -127,9 +127,6 @@ void FuncProblem::problemRunner() {
 
             TYPE fit = 0;
             problemSimulator(population[clan], fit);
-
-            if (clan == 0)
-                bestFit = fit;
 
             if (fit < bestFit) {
                 bestFit = fit;
@@ -149,13 +146,13 @@ void FuncProblem::problemRunner() {
 
         cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
-        if (bestFit <= 5)
+        if (bestFit <= THRESHOLD)
             break;
         if (generacija != GENERATIONS - 1)
             population = cgp.goldMutate(population[bestInd]);
     }
 
-    bestI = population[bestInd];
+    bestI = &population[bestInd];
 
     isSimulated = true;
 

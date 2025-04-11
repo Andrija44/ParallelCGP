@@ -33,7 +33,7 @@ double ADProblem::fitness(TYPE cash, TYPE maxCash, double avgCash) {
 
 void ADProblem::printFunction() {
     if (isSimulated)
-        cout << "Funkcija: " << evalFunction(bestI.outputGene[0].connection) << endl;
+        cout << "Funkcija: " << evalFunction(bestI->outputGene[0].connection) << endl;
     else
         cout << "Problem nije simuliran." << endl;
 }
@@ -52,18 +52,18 @@ string ADProblem::evalFunction(int CGPNodeNum) {
         }
     }
 
-    switch (bestI.genes[CGPNodeNum].operand) {
+    switch (bestI->genes[CGPNodeNum].operand) {
     case 1:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " + " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " + " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 2:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " - " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " - " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 3:
-        oss << "(" << evalFunction(bestI.genes[CGPNodeNum].connection1) << " * " << evalFunction(bestI.genes[CGPNodeNum].connection2) << ")";
+        oss << "(" << evalFunction(bestI->genes[CGPNodeNum].connection1) << " * " << evalFunction(bestI->genes[CGPNodeNum].connection2) << ")";
         return oss.str();
     case 4:
-        oss << "-" << evalFunction(bestI.genes[CGPNodeNum].connection1);
+        oss << "-" << evalFunction(bestI->genes[CGPNodeNum].connection1);
         return oss.str();
     }
 
@@ -112,10 +112,10 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
 void ADProblem::problemRunner() {
     CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
-    vector<CGPIndividual> population;
+    vector<CGPIndividual> population(POPULATION_SIZE);
     int bestInd = 0, generacija = 0;
 
-    population = cgp.generatePopulation();
+    cgp.generatePopulation(population);
 
     random_device rd;
     mt19937 gen(rd());
@@ -136,7 +136,7 @@ void ADProblem::problemRunner() {
     }
 
     for (generacija = 0; generacija < GENERATIONS; generacija++) {
-        double bestFit = -1;
+        double bestFit = DBL_MIN;
         bestInd = 0;
         vector<int> bestInds;
         random_device rd;
@@ -171,7 +171,7 @@ void ADProblem::problemRunner() {
             population = cgp.goldMutate(population[bestInd]);
     }
 
-    bestI = population[bestInd];
+    bestI = &population[bestInd];
 
     isSimulated = true;
 
@@ -198,7 +198,7 @@ void ADProblem::playGame() {
         for (int i = 0; i < 3; i++)
             input.push_back(static_cast<TYPE>(cardDis(gen)));
 
-        card = card = static_cast<int>(input.back());;
+        card = card = static_cast<int>(input.back());
         input.pop_back();
 
         sort(input.begin(), input.end());
@@ -210,12 +210,12 @@ void ADProblem::playGame() {
         else
             win = 0;
 
-        bestI.evaluateValue(input, compNode);
+        bestI->evaluateValue(input, compNode);
 
-        cout << "Cash: " << cash << "; Cards: " << input[0] << ", " << input[1] << "; Bet: " << ((bestI.outputGene[0].value > 1) ? "YES" : "NO")
+        cout << "Cash: " << cash << "; Cards: " << input[0] << ", " << input[1] << "; Bet: " << ((bestI->outputGene[0].value > 1) ? "YES" : "NO")
             << "; Third card: " << card << ((win == 1) ? " | WIN!" : " | LOST!") << endl;
 
-        if (bestI.outputGene[0].value > 1) {
+        if (bestI->outputGene[0].value > 1) {
             if (win == 1)
                 cash += 10;
             else if (win == 0)
