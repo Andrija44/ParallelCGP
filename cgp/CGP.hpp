@@ -1,11 +1,19 @@
-#ifndef CGP_H
-#define CGP_H
+#ifndef CGP_HPP
+#define CGP_HPP
 #define TYPE double
 
-#include <vector>
+#include "CGPIndividual.hpp"
+#include "../Timer.hpp"
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <cmath>
+#include <random>
+#include <fstream>
 #include <string>
+#include <sstream>
+#include <vector>
 #include <omp.h>
-#include "CGPIndividual.h"
 
 namespace parallel_cgp {
     /**

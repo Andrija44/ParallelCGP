@@ -1,4 +1,4 @@
-#include "BoolProblem.h"
+#include "BoolProblem.hpp"
 
 using namespace std;
 using namespace parallel_cgp;

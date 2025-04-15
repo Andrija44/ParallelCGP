@@ -1,9 +1,9 @@
-#include "Problem.h"
-#include "Timer.h"
-#include "boolProblem/BoolProblem.h"
-#include "funcProblem/FuncProblem.h"
-#include "waitProblem/WaitProblem.h"
-#include "adProblem/ADProblem.h"
+#include "Problem.hpp"
+#include "Timer.hpp"
+#include "boolProblem/BoolProblem.hpp"
+#include "funcProblem/FuncProblem.hpp"
+#include "waitProblem/WaitProblem.hpp"
+#include "adProblem/ADProblem.hpp"
 
 #include <iostream>
 #include <omp.h>

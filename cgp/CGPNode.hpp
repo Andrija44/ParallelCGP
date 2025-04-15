@@ -1,5 +1,5 @@
-#ifndef CGPNODE_H
-#define CGPNODE_H
+#ifndef CGPNODE_HPP
+#define CGPNODE_HPP
 #include <iostream>
 #include <fstream>
 #include <string>

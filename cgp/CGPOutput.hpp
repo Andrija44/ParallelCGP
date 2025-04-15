@@ -1,5 +1,5 @@
-#ifndef CGPOUTPUT_H
-#define CGPOUTPUT_H
+#ifndef CGPOUTPUT_HPP
+#define CGPOUTPUT_HPP
 #include <iostream>
 #include <fstream>
 #include <string>

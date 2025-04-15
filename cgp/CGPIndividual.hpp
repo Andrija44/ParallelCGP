@@ -1,14 +1,18 @@
-#ifndef CGPINDIVIDUAL_H
-#define CGPINDIVIDUAL_H
+#ifndef CGPINDIVIDUAL_HPP
+#define CGPINDIVIDUAL_HPP
 #define TYPE double
 
+#include "CGPNode.hpp"
+#include "CGPOutput.hpp"
+#include "../Timer.hpp"
 #include <vector>
 #include <sstream>
 #include <functional>
 #include <omp.h>
-#include "CGPNode.h"
-#include "CGPOutput.h"
-#include "../Timer.h"
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <random>
 
 namespace parallel_cgp {
     /**

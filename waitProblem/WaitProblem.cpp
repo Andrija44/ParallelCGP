@@ -1,4 +1,4 @@
-#include "WaitProblem.h"
+#include "WaitProblem.hpp"
 
 using namespace std;
 using namespace parallel_cgp;

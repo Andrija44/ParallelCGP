@@ -1,4 +1,4 @@
-#include "ADProblem.h"
+#include "ADProblem.hpp"
 
 using namespace std;
 using namespace parallel_cgp;

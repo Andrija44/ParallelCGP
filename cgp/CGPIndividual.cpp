@@ -1,8 +1,4 @@
-#include "CGPIndividual.h"
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <random>
+#include "CGPIndividual.hpp"
 
 using namespace std;
 using namespace parallel_cgp;

@@ -1,4 +1,4 @@
-#include "FuncProblem.h"
+#include "FuncProblem.hpp"
 
 using namespace std;
 using namespace parallel_cgp;

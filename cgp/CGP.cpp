@@ -1,13 +1,4 @@
-#include "CGP.h"
-#include "../Timer.h"
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <cmath>
-#include <random>
-#include <fstream>
-#include <string>
-#include <sstream>
+#include "CGP.hpp"
 
 using namespace std;
 using namespace parallel_cgp;
