@@ -7,13 +7,11 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
     // vrijeme za izvodenje cijele funkcije
     Timer genTime("generatePopulationTime");
 
+    random_device rd;
+    mt19937 gen(rd());
+
+    #pragma omp parallel for schedule(dynamic) firstprivate(gen)
     for (int i = 0; i < populationSize; i++) {
-        // vrijeme za generiranje svih jedinke
-        Timer indTime("individualGenerationTime");
-
-        random_device rd;
-        mt19937 gen(rd());
-
         uniform_int_distribution<> operandDis(1, operands);
         uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
         uniform_int_distribution<> outputDis(0, rows * columns + inputs - 1);
@@ -75,11 +73,9 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
         }
 
         CGPIndividual individual(genes, outputGene, rows, columns, levelsBack, inputs, outputs);
-        individual.resolveLoops();
 
         population[i] = individual;
-
-        indTime.endTimer();
+        population[i].resolveLoops();
     }
 
     genTime.endTimer();
@@ -95,13 +91,14 @@ void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
     random_device rd;
     mt19937 gen(rd());
 
-    uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
-    uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
-    uniform_int_distribution<> operandDis(1, operands);
-    uniform_int_distribution<> outputDis(0, parent.outputs - 1);
+    #pragma omp parallel for schedule(dynamic) shared(parent) firstprivate(gen) num_threads(omp_get_max_threads() / 2)
+    for (int n = 1; n < populationSize; n++) {
+        uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
+        uniform_int_distribution<> geneDis(0, 2);
+        uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
+        uniform_int_distribution<> operandDis(1, operands);
+        uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
-    for (int n = 0; n < populationSize - 1; n++) {
         vector<CGPNode> genes = parent.genes;
         vector<CGPOutput> outputGene = parent.outputGene;
         bool isActive = false;
