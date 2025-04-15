@@ -55,45 +55,75 @@ void CGPIndividual::printNodes() {
 }
 
 void CGPIndividual::evaluateUsed() {
+    Timer evalUseTime("evaluateUsedTimer");
+
+    //#pragma omp parallel for
     for (int m = 0; m < outputs; m++)
         isUsed(outputGene[m].connection);
 
     evalDone = true;
+    evalUseTime.endTimer();
 }
 
 void CGPIndividual::isUsed(int CGPNodeNum) {
+    //#pragma omp atomic write
     genes[CGPNodeNum].used = true;
 
+    //#pragma omp task
     if (genes[CGPNodeNum].connection1 >= 0)
         isUsed(genes[CGPNodeNum].connection1);
 
+    //#pragma omp task
     if (genes[CGPNodeNum].connection2 >= 0)
         isUsed(genes[CGPNodeNum].connection2);
+
+    //#pragma omp taskwait
 }
 
-void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> computeNode) {
+void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> &computeNode) {
+    Timer evalValTime("evaluateValueTimer");
+
     clearInd();
 
     for (int l = 0; l < inputs; l++)
         genes[l].outValue = input[l];
 
+    //#pragma omp parallel
+    //#pragma omp single
     for (int m = 0; m < outputs; m++)
+        //#pragma omp task
         outputGene[m].value = evalNode(outputGene[m].connection, computeNode);
+
+    evalValTime.endTimer();
 }
 
-TYPE CGPIndividual::evalNode(int CGPNodeNum, function<TYPE(int, TYPE, TYPE)> computeNode) {
+TYPE CGPIndividual::evalNode(int CGPNodeNum, function<TYPE(int, TYPE, TYPE)> &computeNode) {
 
-    if (isnan(genes[CGPNodeNum].outValue)) {
-        TYPE value1 = evalNode(genes[CGPNodeNum].connection1, computeNode);
-        TYPE value2 = genes[CGPNodeNum].connection2 < 0 ? 0 : evalNode(genes[CGPNodeNum].connection2, computeNode);
+    TYPE outVal;
+    //#pragma omp atomic read
+    outVal = genes[CGPNodeNum].outValue;
+    if (!isnan(outVal))
+        return outVal;
 
-        genes[CGPNodeNum].outValue = computeNode(genes[CGPNodeNum].operand, value1, value2);
-    }
+    TYPE value1, value2 = 0;
+
+    //#pragma omp task shared(value1)
+    value1 = evalNode(genes[CGPNodeNum].connection1, computeNode);
+    if (genes[CGPNodeNum].connection2 >= 0)
+        //#pragma omp task shared(value2)
+        value2 = evalNode(genes[CGPNodeNum].connection2, computeNode);
+
+    //#pragma omp taskwait
+
+    TYPE newOutVal = computeNode(genes[CGPNodeNum].operand, value1, value2);
+    //#pragma omp atomic write
+    genes[CGPNodeNum].outValue = newOutVal;
     
     return genes[CGPNodeNum].outValue;
 }
 
 void CGPIndividual::clearInd() {
+    //#pragma omp parallel for
     for (int i = inputs; i < genes.size(); i++)
         genes[i].outValue = NAN;
 }
@@ -126,10 +156,17 @@ CGPIndividual CGPIndividual::deserialize(istream& is) {
     return CGPIndividual(genes, outputGene, rows, columns, levelsBack, inputs, outputs, evalDone);
 }
 
-bool CGPIndividual::findLoops(int CGPNodeNum, vector<int> CGPNodeSet) {
+bool CGPIndividual::findLoops(int CGPNodeNum) {
     branches.clear();
 
-    return loopFinder(CGPNodeNum, CGPNodeSet);;
+    vector<int> CGPNodeSet;
+    bool res;
+
+    //#pragma omp parallel shared(res)
+    //#pragma omp single
+    res = loopFinder(CGPNodeNum, CGPNodeSet);
+
+    return res;
 }
 
 bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
@@ -137,6 +174,7 @@ bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
     for (int i = 0; i < CGPNodeSet.size(); i++)
         if (CGPNodeSet[i] == CGPNodeNum) {
             CGPNodeSet.push_back(CGPNodeNum);
+            //#pragma omp critical
             branches.push_back(CGPNodeSet);
             return true;
         }
@@ -147,57 +185,79 @@ bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
         return false;
     }
 
-    bool conn1 = loopFinder(genes[CGPNodeNum].connection1, CGPNodeSet);
-    bool conn2 = genes[CGPNodeNum].connection2 == -1 ? false : loopFinder(genes[CGPNodeNum].connection2, CGPNodeSet);
+    bool conn1, conn2;
 
+    //#pragma omp task shared(conn1)
+    conn1 = loopFinder(genes[CGPNodeNum].connection1, CGPNodeSet);
+    //#pragma omp task shared(conn2)
+    conn2 = genes[CGPNodeNum].connection2 == -1 ? false : loopFinder(genes[CGPNodeNum].connection2, CGPNodeSet);
+
+    //#pragma omp taskwait
     return conn1 || conn2;
 }
 
 void CGPIndividual::resolveLoops() {
 
+    Timer resLoopTime("resolveLoopsTimer");
+
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
-
-    vector<int> CGPNodeSet;
 
     for (int m = 0; m < outputs; m++) {
-        while (findLoops(outputGene[m].connection, CGPNodeSet)) {
+        while (findLoops(outputGene[m].connection)) {
+            //#pragma omp parallel for firstprivate(gen) num_threads(omp_get_max_threads() / 2)
             for (int i = 0; i < branches.size(); i++) {
-                int cell1 = branches[i][branches[i].size() - 2];
-                int cell2 = branches[i][branches[i].size() - 1];
+                uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
+                int cell1, cell2, con1, con2, con;
 
-                if (genes[cell1].connection1 == cell2) {
-                    genes[cell1].connection1 = connectionDis(gen);
+                #pragma omp atomic read
+                cell1 = branches[i][branches[i].size() - 2];
+                #pragma omp atomic read
+                cell2 = branches[i][branches[i].size() - 1];
 
+                #pragma omp atomic read
+                con1 = genes[cell1].connection1;
+                #pragma omp atomic read
+                con2 = genes[cell1].connection2;
+
+                if (con1 == cell2) {
                     while (true) {
-                        if (genes[cell1].connection1 < inputs)
+                        #pragma omp atomic write
+                        genes[cell1].connection1 = connectionDis(gen);
+
+                        #pragma omp atomic read
+                        con = genes[cell1].connection1;
+
+                        if (con < inputs)
                             break;
-                        if ((genes[cell1].connection1 % columns) == (cell1 % columns))
-                            genes[cell1].connection1 = connectionDis(gen);
-                        else if (((genes[cell1].connection1 - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
-                            genes[cell1].connection1 = connectionDis(gen);
+                        if ((con % columns) == (cell1 % columns))
+                            continue;
+                        else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
+                            continue;
                         else
                             break;
                     }
                 }
-                else if (genes[cell1].connection2 == cell2) {
-                    genes[cell1].connection2 = connectionDis(gen);
-
+                else if (con2 == cell2) {
                     while (true) {
-                        if (genes[cell1].connection2 < inputs)
+                        #pragma omp atomic write
+                        genes[cell1].connection2 = connectionDis(gen);
+
+                        #pragma omp atomic read
+                        con = genes[cell1].connection2;
+                        if (con < inputs)
                             break;
-                        if ((genes[cell1].connection2 % columns) == (cell1 % columns))
-                            genes[cell1].connection2 = connectionDis(gen);
-                        else if (((genes[cell1].connection2 - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
-                            genes[cell1].connection2 = connectionDis(gen);
+                        if ((con % columns) == (cell1 % columns))
+                            continue;
+                        else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
+                            continue;
                         else
                             break;
                     }
                 }
             }
-
-            CGPNodeSet.clear();
         }
     }
+
+    resLoopTime.endTimer();
 }

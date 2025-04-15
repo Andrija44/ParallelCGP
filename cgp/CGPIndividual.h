@@ -18,7 +18,7 @@ namespace parallel_cgp {
     private:
         void isUsed(int nodeNum);
         bool loopFinder(int nodeNum, std::vector<int> nodeSet);
-        TYPE evalNode(int nodeNum, std::function<TYPE(int, TYPE, TYPE)> computeNode);
+        TYPE evalNode(int nodeNum, std::function<TYPE(int, TYPE, TYPE)> &computeNode);
         void clearInd();
     public:
         /**
@@ -90,7 +90,7 @@ namespace parallel_cgp {
          * Metoda za izracunavanje vrijednosti u izlaznim genima za dane ulazne vrijednosti.
          * @param[in] input Vector ulazniih vrijednosti tipa double.
          */
-        void evaluateValue(std::vector<TYPE> input, std::function<TYPE(int, TYPE, TYPE)> computeNode);
+        void evaluateValue(std::vector<TYPE> input, std::function<TYPE(int, TYPE, TYPE)> &computeNode);
         /**
          * Metoda za oznacavanje koristenih gena u mrezi.
          */
@@ -106,7 +106,7 @@ namespace parallel_cgp {
          * @param[in] nodeSet  Vector za sad prodjenih nodeova.
          * @returns             True ako je pronadjena petlja, inace false.
          */
-        bool findLoops(int nodeNum, std::vector<int> nodeSet);
+        bool findLoops(int nodeNum);
         /**
          * Metoda za razrjesavanje petlji u mrezi.
          */
