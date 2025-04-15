@@ -40,7 +40,7 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 }
 
 void WaitProblem::problemRunner() {
-    CGP cgp(GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, MUTATIONS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
+    CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
     int bestInd = 0, generacija = 0;
@@ -70,6 +70,8 @@ void WaitProblem::problemRunner() {
 
         if (bestInds.size() > 1)
             bestInds.erase(bestInds.begin());
+        if (bestInds.size() == 0)
+            bestInds.push_back(0);
 
         uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size()) - 1);
 
@@ -80,7 +82,7 @@ void WaitProblem::problemRunner() {
         if (bestFit == 100)
             break;
         if (generacija != GENERATIONS - 1)
-            population = cgp.goldMutate(population[bestInd]);
+            cgp.goldMutate(population[bestInd], population);
     }
 
     bestI = &population[bestInd];

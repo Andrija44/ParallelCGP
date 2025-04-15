@@ -8,7 +8,7 @@
 #include <functional>
 #include <iostream>
 
-#if defined(_OPENMP)
+#ifdef _OPENMP
 #define timerFunc() omp_get_wtime()
 #define timerDiff(startTime, endTime) (endTime - startTime)
 #define TIME_UNIT double
@@ -29,7 +29,7 @@ namespace parallel_cgp {
 		TIME_UNIT start;
 		double end;
 	public:
-		Timer(std::string funcName) : start(timerFunc()), end(0), funcName(funcName) { 
+		Timer(std::string funcName) : funcName(funcName), start(timerFunc()), end(0) {
 			#pragma omp critical
 			{
 				if (!parallel_cgp::Timer::mapa.count(funcName))
@@ -40,7 +40,7 @@ namespace parallel_cgp {
 		void endTimer() {
 			end = timerDiff(start, timerFunc());
 
-			#pragma omp critical
+			#pragma omp atomic update
 			parallel_cgp::Timer::mapa[funcName] += end;
 			
 		}

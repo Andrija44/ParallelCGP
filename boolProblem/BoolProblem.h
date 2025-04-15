@@ -34,12 +34,11 @@ namespace parallel_cgp {
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 5000;
-		int ROWS = 15;
-		int COLUMNS = 15;
-		int LEVELS_BACK = 2;
-		int MUTATIONS = 0;
-		int POPULATION_SIZE = 20;
+		int GENERATIONS = 200;
+		int ROWS = 10;
+		int COLUMNS = 10;
+		int LEVELS_BACK = 3;
+		int POPULATION_SIZE = 15;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
@@ -54,7 +53,7 @@ namespace parallel_cgp {
 		 * Boolean funkcija koja oznacava funkciju koju CGP pokusava pronaci.
 		 */
 		const std::function<int(std::bitset<INPUTS> in)> boolFunc = 
-			[](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & (in[0] ^ in[4] | (in[3] & ~in[2])); };
+			[](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & ((in[0] ^ in[4]) | (in[3] & ~in[2])); };
 		/**
 		 * Parity 8bit funkcija koju CGP pokusava pronaci.
 		 */
@@ -70,11 +69,6 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		BoolProblem() {};
-		/**
-		 * Konstruktor koji prima sve promjenjive vrijednosti za bool problem.
-		 */
-		BoolProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int MUTATIONS, int POPULATION_SIZE)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
 		 * Metoda za pokretanje problema.

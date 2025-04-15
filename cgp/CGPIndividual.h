@@ -5,8 +5,10 @@
 #include <vector>
 #include <sstream>
 #include <functional>
+#include <omp.h>
 #include "CGPNode.h"
 #include "CGPOutput.h"
+#include "../Timer.h"
 
 namespace parallel_cgp {
     /**

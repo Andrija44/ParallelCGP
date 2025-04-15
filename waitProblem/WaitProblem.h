@@ -24,14 +24,13 @@ namespace parallel_cgp {
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 5000;
-		int ROWS = 8;
-		int COLUMNS = 8;
-		int LEVELS_BACK = 1;
+		int GENERATIONS = 200;
+		int ROWS = 15;
+		int COLUMNS = 15;
+		int LEVELS_BACK = 3;
+		int POPULATION_SIZE = 15;
 		int INPUTS = 1;
 		int OUTPUTS = 1;
-		int MUTATIONS = 0;
-		int POPULATION_SIZE = 20;
 
 		/**
 		 * Varijabla koja opisuje koliko ce se cekati u milisekundama.
@@ -57,13 +56,6 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		WaitProblem() {};
-		/**
-		 * Konstruktor koji prima sve promjenjive vrijednosti za wait problem.
-		 */
-		WaitProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int OUTPUTS, int MUTATIONS, int POPULATION_SIZE, int WAIT_TIME)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), OUTPUTS(OUTPUTS), MUTATIONS(MUTATIONS),
-			POPULATION_SIZE(POPULATION_SIZE), WAIT_TIME(WAIT_TIME) {
-		};
 
 		/**
 		 * Metoda za pokretanje problema.

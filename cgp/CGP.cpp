@@ -30,7 +30,7 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
         vector<CGPNode> genes;
         vector<CGPOutput> outputGene;
 
-        for (size_t k = 0; k < inputs; k++) {
+        for (int k = 0; k < inputs; k++) {
             CGPNode node;
             node.used = false;
             node.connection1 = -1;
@@ -76,7 +76,7 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
             genes.push_back(node);
         }
 
-        for (size_t k = 0; k < outputs; k++) {
+        for (int k = 0; k < outputs; k++) {
             CGPOutput output;
 
             output.connection = outputDis(gen);
@@ -94,80 +94,12 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
     genTime.endTimer();
 }
 
-vector<CGPIndividual> CGP::pointMutate(CGPIndividual parent) {
-    vector<CGPIndividual> population;
+void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
+    Timer mutTime("mutatePopulationTime");
+
     if (!parent.evalDone)
         parent.evaluateUsed();
-    population.push_back(parent);
-
-    random_device rd;
-    mt19937 gen(rd());
-
-    uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
-    uniform_int_distribution<> geneDis(0, 2);
-    uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
-    uniform_int_distribution<> operandDis(1, operands);
-    uniform_int_distribution<> outputDis(0, parent.outputs - 1);
-
-    for (int n = 0; n < populationSize - 1; n++) {
-        vector<CGPNode> genes = parent.genes;
-        vector<CGPOutput> outputGene = parent.outputGene;
-
-        for (int z = parent.inputs; z < genes.size(); z++)
-            genes[z].used = false;
-
-        for (int i = 0; i < mutations; i++) {
-            int mut = geneDis(gen);
-            int cell = nodDis(gen);
-            if (cell == parent.genes.size()) {
-                outputGene[outputDis(gen)].connection = connectionDis(gen);
-                continue;
-            }
-            if (mut == 0)
-                genes[cell].operand = operandDis(gen);
-            else if (mut == 1)
-                genes[cell].connection1 = connectionDis(gen);
-            else if (mut == 2)
-                genes[cell].connection2 = connectionDis(gen);
-
-            genes[cell].connection2 = (genes[cell].operand >= biOperands) ? -1 : connectionDis(gen);
-
-            while (true) {
-                if (genes[cell].connection1 < parent.inputs)
-                    break;
-                if ((genes[cell].connection1 % parent.columns) == (cell % parent.columns))
-                    genes[cell].connection1 = connectionDis(gen);
-                else if (((genes[cell].connection1 - parent.inputs) % parent.columns) > (((cell - parent.inputs) % parent.columns) + parent.levelsBack))
-                    genes[cell].connection1 = connectionDis(gen);
-                else
-                    break;
-            }
-
-            while (true) {
-                if (genes[cell].connection2 < parent.inputs)
-                    break;
-                if ((genes[cell].connection2 % parent.columns) == (cell % parent.columns))
-                    genes[cell].connection2 = connectionDis(gen);
-                else if (((genes[cell].connection2 - parent.inputs) % parent.columns) > (((cell - parent.inputs) % parent.columns) + parent.levelsBack))
-                    genes[cell].connection2 = connectionDis(gen);
-                else
-                    break;
-            }
-        }
-
-        CGPIndividual individual(genes, outputGene, parent.rows, parent.columns, parent.levelsBack, parent.inputs, parent.outputs);
-        individual.resolveLoops();
-        population.push_back(individual);
-    }
-
-    return population;
-}
-
-vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
-    vector<CGPIndividual> population;
-    if (!parent.evalDone)
-        parent.evaluateUsed();
-    population.push_back(parent);
+    population[0] = parent;
 
     random_device rd;
     mt19937 gen(rd());
@@ -230,15 +162,14 @@ vector<CGPIndividual> CGP::goldMutate(CGPIndividual parent) {
             isActive = genes[cell].used;
         }
 
-        for (int z = parent.inputs; z < genes.size(); z++)
+        for (size_t z = parent.inputs; z < genes.size(); z++)
             genes[z].used = false;
 
         CGPIndividual individual(genes, outputGene, parent.rows, parent.columns, parent.levelsBack, parent.inputs, parent.outputs);
-        individual.resolveLoops();
 
-        population.push_back(individual);
-    }
+        population[n] = individual;
+        population[n].resolveLoops();
+    }   
 
-    return population;
-
+    mutTime.endTimer();
 }

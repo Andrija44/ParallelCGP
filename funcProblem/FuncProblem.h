@@ -27,18 +27,17 @@ namespace parallel_cgp {
 		const static int BI_OPERANDS = 5;
 		const static int INPUTS = 2;
 		const static int OUTPUTS = 1;
-		const static int THRESHOLD = 40;
+		const static int THRESHOLD = 0;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 5000;
-		int ROWS = 8;
-		int COLUMNS = 8;
-		int LEVELS_BACK = 1;
-		int MUTATIONS = 0;
-		int POPULATION_SIZE = 20;
+		int GENERATIONS = 100;
+		int ROWS = 15;
+		int COLUMNS = 15;
+		int LEVELS_BACK = 3;
+		int POPULATION_SIZE = 15;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
@@ -60,11 +59,6 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		FuncProblem() {};
-		/**
-		 * Konstruktor koji prima sve promjenjive vrijednosti za func problem.
-		 */
-		FuncProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int MUTATIONS, int POPULATION_SIZE)
-			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), MUTATIONS(MUTATIONS), POPULATION_SIZE(POPULATION_SIZE) {};
 
 		/**
 		 * Metoda za pokretanje problema.

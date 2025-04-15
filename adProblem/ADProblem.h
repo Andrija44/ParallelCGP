@@ -35,12 +35,11 @@ namespace parallel_cgp {
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 5000;
-		int ROWS = 8;
-		int COLUMNS = 8;
-		int LEVELS_BACK = 1;
-		int MUTATIONS = 0;
-		int POPULATION_SIZE = 20;
+		int GENERATIONS = 200;
+		int ROWS = 15;
+		int COLUMNS = 15;
+		int LEVELS_BACK = 3;
+		int POPULATION_SIZE = 15;
 
 		/**
 		 * Setovi karata koji se koriste u igri
@@ -57,6 +56,11 @@ namespace parallel_cgp {
 		void problemSimulator(parallel_cgp::CGPIndividual& individual, double& fit) override;
 		std::string evalFunction(int CGPNodeNum) override;
 	public:
+		/**
+		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
+		 */
+		ADProblem() {};
+
 		/**
 		 * Metoda za pokretanje problema.
 		 */
