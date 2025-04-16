@@ -107,7 +107,6 @@ namespace parallel_cgp {
         /**
          * Rekurzivna funkcija za pronalazak petlji u mrezi.
          * @param[in] nodeNum  Broj trenutnog noda.
-         * @param[in] nodeSet  Vector za sad prodjenih nodeova.
          * @returns             True ako je pronadjena petlja, inace false.
          */
         bool findLoops(int nodeNum);
