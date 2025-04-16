@@ -59,10 +59,13 @@ string BoolProblem::evalFunction(int CGPNodeNum) {
 }
 
 void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
+    Timer probSimTime("problemSimulatorTimer");
+
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
-    for (int perm = 0; perm < pow(2, INPUTS); ++perm) {
+    #pragma omp parallel for reduction(+:fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads() / 2)
+    for (int perm = 0; perm < pow(2, INPUTS); perm++) {
         bitset<INPUTS> bits(perm);
         vector<double> input;
 
@@ -72,6 +75,8 @@ void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
         individual.evaluateValue(input, compNode);
         fit += fitness(bits, static_cast<int>(individual.outputGene[0].value));
     }
+
+    probSimTime.endTimer();
 }
 
 void BoolProblem::problemRunner() {
