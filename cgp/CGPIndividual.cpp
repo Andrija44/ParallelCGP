@@ -77,11 +77,8 @@ void CGPIndividual::isUsed(int CGPNodeNum) {
 }
 
 void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> &computeNode) {
-<<<<<<< HEAD
     Timer evalValTime("evaluateValueTimer");
 
-=======
->>>>>>> main
     clearInd();
 
     for (int l = 0; l < inputs; l++)
@@ -159,7 +156,6 @@ bool CGPIndividual::findLoops(int CGPNodeNum) {
     branches.clear();
 
     vector<int> CGPNodeSet;
-<<<<<<< HEAD
     bool res;
 
     //#pragma omp parallel shared(res)
@@ -167,10 +163,6 @@ bool CGPIndividual::findLoops(int CGPNodeNum) {
     res = loopFinder(CGPNodeNum, CGPNodeSet);
 
     return res;
-=======
-
-    return loopFinder(CGPNodeNum, CGPNodeSet);
->>>>>>> main
 }
 
 bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
@@ -209,17 +201,10 @@ void CGPIndividual::resolveLoops() {
 
     for (int m = 0; m < outputs; m++) {
         while (findLoops(outputGene[m].connection)) {
-<<<<<<< HEAD
             //#pragma omp parallel for firstprivate(gen) num_threads(omp_get_max_threads() / 2)
             for (int i = 0; i < branches.size(); i++) {
                 uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
                 int cell1, cell2, con1, con2, con;
-=======
-            for (int i = 0; i < branches.size(); i++) {
-                uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
-                int cell1 = branches[i][branches[i].size() - 2];
-                int cell2 = branches[i][branches[i].size() - 1];
->>>>>>> main
 
                 #pragma omp atomic read
                 cell1 = branches[i][branches[i].size() - 2];
