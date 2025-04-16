@@ -24,9 +24,9 @@ namespace parallel_cgp {
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 200;
-		int ROWS = 15;
-		int COLUMNS = 15;
+		int GENERATIONS = 1000;
+		int ROWS = 10;
+		int COLUMNS = 10;
 		int LEVELS_BACK = 3;
 		int POPULATION_SIZE = 15;
 		int INPUTS = 1;
@@ -35,7 +35,7 @@ namespace parallel_cgp {
 		/**
 		 * Varijabla koja opisuje koliko ce se cekati u milisekundama.
 		 */
-		int WAIT_TIME = 10;
+		int WAIT_TIME = 1;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
