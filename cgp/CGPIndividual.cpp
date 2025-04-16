@@ -67,7 +67,7 @@ void CGPIndividual::isUsed(int CGPNodeNum) {
         isUsed(genes[CGPNodeNum].connection2);
 }
 
-void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> computeNode) {
+void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> &computeNode) {
     clearInd();
 
     for (int l = 0; l < inputs; l++)
@@ -77,7 +77,7 @@ void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, T
         outputGene[m].value = evalNode(outputGene[m].connection, computeNode);
 }
 
-TYPE CGPIndividual::evalNode(int CGPNodeNum, function<TYPE(int, TYPE, TYPE)> computeNode) {
+TYPE CGPIndividual::evalNode(int CGPNodeNum, function<TYPE(int, TYPE, TYPE)> &computeNode) {
 
     if (isnan(genes[CGPNodeNum].outValue)) {
         TYPE value1 = evalNode(genes[CGPNodeNum].connection1, computeNode);
@@ -122,10 +122,12 @@ CGPIndividual CGPIndividual::deserialize(istream& is) {
     return CGPIndividual(genes, outputGene, rows, columns, levelsBack, inputs, outputs, evalDone);
 }
 
-bool CGPIndividual::findLoops(int CGPNodeNum, vector<int> CGPNodeSet) {
+bool CGPIndividual::findLoops(int CGPNodeNum) {
     branches.clear();
 
-    return loopFinder(CGPNodeNum, CGPNodeSet);;
+    vector<int> CGPNodeSet;
+
+    return loopFinder(CGPNodeNum, CGPNodeSet);
 }
 
 bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
@@ -153,13 +155,11 @@ void CGPIndividual::resolveLoops() {
 
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
-
-    vector<int> CGPNodeSet;
 
     for (int m = 0; m < outputs; m++) {
-        while (findLoops(outputGene[m].connection, CGPNodeSet)) {
+        while (findLoops(outputGene[m].connection)) {
             for (int i = 0; i < branches.size(); i++) {
+                uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
                 int cell1 = branches[i][branches[i].size() - 2];
                 int cell2 = branches[i][branches[i].size() - 1];
 
@@ -192,8 +192,6 @@ void CGPIndividual::resolveLoops() {
                     }
                 }
             }
-
-            CGPNodeSet.clear();
         }
     }
 }
