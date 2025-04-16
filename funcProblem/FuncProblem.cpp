@@ -94,15 +94,18 @@ void FuncProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 
     TYPE N = 0;
 
-    for (TYPE x = -10; x < 10; x += 0.5) {
-        for (TYPE y = -10; y < 10; y += 0.5) {
-            vector<TYPE> input;
-            input.push_back(x);
-            input.push_back(y);
+    #pragma omp parallel for collapse(2) reduction(+:N, fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads() / 2)
+    for (int x = -20; x < 20; x++) {
+        for (int y = -20; y < 20; y++) {
+            TYPE xd = static_cast<TYPE>(x) / 2.0;
+            TYPE yd = static_cast<TYPE>(y) / 2.0;
+            vector<TYPE> input(2);
+            input[0] = xd;
+            input[1] = yd;
 
             individual.evaluateValue(input, compNode);
-            fit += pow(fitness(x, y, individual.outputGene[0].value), 2);
-            N++;
+            fit += pow(fitness(xd, yd, individual.outputGene[0].value), 2);
+            N += 1;
         }
     }
 

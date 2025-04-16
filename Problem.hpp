@@ -2,6 +2,7 @@
 #define PROBLEM_HPP
 #define TYPE double
 
+#include "Timer.hpp"
 #include "cgp/CGPIndividual.hpp"
 #include <cmath>
 #include <random>
