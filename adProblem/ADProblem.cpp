@@ -74,11 +74,12 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
-    int card, win;
     int cash = STARTING_CASH, maxCash = STARTING_CASH;
     double avgCash = 0;
 
+    #pragma omp parallel for reduction(+:avgCash) reduction(max:maxCash) firstprivate(individual) shared(cash, compNode) num_threads(omp_get_max_threads() / 2)
     for (int i = 0; i < CARD_SETS; i++) {
+        int card, win, privC;
         card = static_cast<int>(sets[i].back());
 
         if (card > sets[i].at(0) && card < sets[i].at(1))
@@ -91,21 +92,38 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
         individual.evaluateValue(sets[i], compNode);
 
         if (individual.outputGene[0].value > 1) {
-            if (win == 1)
-                cash += 10;
-            else if (win == 0)
-                cash -= 10;
-            else if (win == -1)
-                cash -= 20;
+            if (win == 1) {
+                #pragma omp atomic capture
+                {
+                    cash += 10; privC = cash;
+                }
+            }
+            else if (win == 0) {
+                #pragma omp atomic capture
+                {
+                    cash += -10; privC = cash;
+                }
+            }
+            else if (win == -1) {
+                #pragma omp atomic capture
+                {
+                    cash += -20; privC = cash;
+                }
+            }
+        }
+        else {
+            #pragma omp atomic read
+            privC = cash;
         }
 
-        if (cash > maxCash)
-            maxCash = cash;
+        if (privC > maxCash)
+            maxCash = privC;
 
-        avgCash += cash;
+        avgCash += privC;
     }
 
     avgCash /= static_cast<double>(CARD_SETS);
+
     fit = fitness(cash, maxCash, avgCash);
 }
 
