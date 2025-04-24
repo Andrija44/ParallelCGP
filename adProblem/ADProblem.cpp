@@ -71,6 +71,8 @@ string ADProblem::evalFunction(int CGPNodeNum) {
 }
 
 void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
+    Timer probSimTime("problemSimulatorTimer");
+
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
@@ -107,9 +109,13 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
 
     avgCash /= static_cast<double>(CARD_SETS);
     fit = fitness(cash, maxCash, avgCash);
+
+    probSimTime.endTimer();
 }
 
 void ADProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -165,9 +171,10 @@ void ADProblem::problemRunner() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        if(printGens)
+            cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
-        if (bestFit >= STARTING_CASH * 3)
+        if (bestFit >= THRESHOLD)
             break;
         if (generacija != GENERATIONS - 1)
             cgp.goldMutate(population[bestInd], population);
@@ -178,6 +185,8 @@ void ADProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 
     playGame();
 }

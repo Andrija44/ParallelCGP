@@ -7,6 +7,7 @@
 #include <string>
 #include <functional>
 #include <iostream>
+#include <fstream>
 
 #ifdef _OPENMP
 #define timerFunc() omp_get_wtime()
@@ -42,6 +43,22 @@ namespace parallel_cgp {
 			for (const auto& [key, value] : parallel_cgp::Timer::mapa)
 				for (const auto& val : value)
 					std::cout << '[' << key << "] = " << val << "; " << std::endl;
+		}
+
+		static void saveTimes(std::string filename, std::string testName, int gens, int rows, int cols, int levels, int pop) {
+			std::ofstream myFile;
+			myFile.open(filename, std::ios_base::app);
+			myFile << "TEST NAME: " << testName;
+			myFile << ", GENS: " << gens << ", ROWS: " << rows << ", COLUMNS: " << cols
+				<< ", LEVELS BACK: " << levels << ", POP SIZE: " << pop << std::endl;
+
+			for (const auto& [key, value] : parallel_cgp::Timer::mapa) {
+				myFile << '[' << key << "],";
+				for (const auto& val : value)
+					myFile << val << ',';
+				myFile << std::endl;
+			}
+			myFile.close();
 		}
 
 		static void clearTimes() {

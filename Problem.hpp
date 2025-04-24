@@ -31,10 +31,8 @@ namespace parallel_cgp {
          * Najbolja jedinka nakon pokretanja problem simulatora.
          */
         CGPIndividual *bestI;
-        /**
-         * Naziv datoteke koja sadrzi najbolju jedinku.
-         */
-        std::string bestFile = "problem_best.txt";
+
+        bool printGens = false;
 
         /**
          * Parametri koji su na raspolaganju svakom problemu.<br>

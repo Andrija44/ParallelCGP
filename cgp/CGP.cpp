@@ -5,7 +5,7 @@ using namespace parallel_cgp;
 
 void CGP::generatePopulation(vector<CGPIndividual> &population) {
     // vrijeme za izvodenje cijele funkcije
-    Timer genTime("generatePopulationTime");
+    Timer genTime("generatePopulationTimer");
 
     random_device rd;
     mt19937 gen(rd());
@@ -81,7 +81,7 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
 }
 
 void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
-    Timer mutTime("mutatePopulationTime");
+    Timer mutTime("mutatePopulationTimer");
 
     if (!parent.evalDone)
         parent.evaluateUsed();

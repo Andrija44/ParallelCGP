@@ -26,6 +26,8 @@ string WaitProblem::evalFunction(int CGPNodeNum) {
 }
 
 void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
+    Timer probSimTime("problemSimulatorTimer");
+
     function<TYPE(int op, TYPE v1, TYPE v2)> compNode =
         [&](int op, TYPE v1, TYPE v2) { return computeNode(op, v1, v2); };
 
@@ -37,9 +39,13 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
         waitFunc();
     }
     fit = fitness(fit);
+
+    probSimTime.endTimer();
 }
 
 void WaitProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -90,4 +96,6 @@ void WaitProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 }
