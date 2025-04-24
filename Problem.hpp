@@ -15,7 +15,7 @@ namespace parallel_cgp {
         /**
          * Metoda koja predstavlja simulator u problemu.
          * @param[in] individual    Referenca na jedinku koja se koristi.
-         * @param[in] fit           Referenca na varijablu u koju se pohranjuje fitness.
+         * @param[out] fit           Referenca na varijablu u koju se pohranjuje fitness.
          */
 		virtual void problemSimulator(parallel_cgp::CGPIndividual &individual, TYPE &fit) {}
         /**
@@ -33,22 +33,35 @@ namespace parallel_cgp {
          */
         CGPIndividual *bestI;
 
+        /**
+         * Varijabla koja oznacuje hoce li se ispisivati vrijednost fitnesa za svaku generaciju.
+         */
         bool printGens = false;
 
-        /**
+        /** @name Promjenjivi parametri
          * Parametri koji su na raspolaganju svakom problemu.<br>
          * Mogu se mijenjati po potrebi.
          */
+        /**@{*/
+        /** Ukupni broj operanada. */
         int NUM_OPERANDS = 9;
+        /** Broj binarnih operanada (+1 iz nekog razloga). */
         int BI_OPERANDS = 5;
+        /** Broj generacija koji se vrti. */
         int GENERATIONS = 5000;
+        /** Broj redova CGP mreze. */
         int ROWS = 8;
+        /** Broj stupaca CGP mreze. */
         int COLUMNS = 8;
+        /** Broj razina unazad na koji se nodeovi mogu spojiti u CGP mrezi. */
         int LEVELS_BACK = 3;
+        /** Broj ulaza u CGP mrezu. */
         int INPUTS = 6;
+        /** Broj izlaza iz CGP mrezu. */
         int OUTPUTS = 1;
-        int MUTATIONS = 6;
+        /** Velicina populacije. */
         int POPULATION_SIZE = 20;
+        /**@}*/
 
         /**
          * Funkcija u kojoj su zapisani svi moguci operandi za dani problem.
