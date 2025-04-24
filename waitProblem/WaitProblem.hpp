@@ -16,11 +16,6 @@ namespace parallel_cgp {
 	class WaitProblem : public Problem {
 	private:
 		/**
-		 * Naziv datoteke koja sadrzi najbolju jedinku.
-		 */
-		const std::string bestFile = "wait_best.txt";
-
-		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
@@ -35,7 +30,7 @@ namespace parallel_cgp {
 		/**
 		 * Varijabla koja opisuje koliko ce se cekati u milisekundama.
 		 */
-		int WAIT_TIME = 10;
+		int WAIT_TIME = 1;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
@@ -56,6 +51,11 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		WaitProblem() {};
+		/**
+		 * Konstruktor koji prima sve promjenjive vrijednosti za wait problem.
+		 */
+		WaitProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int WAIT_TIME)
+			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), POPULATION_SIZE(POPULATION_SIZE), WAIT_TIME(WAIT_TIME) {};
 
 		/**
 		 * Metoda za pokretanje problema.

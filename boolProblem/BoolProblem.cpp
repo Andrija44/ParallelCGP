@@ -59,6 +59,8 @@ string BoolProblem::evalFunction(int CGPNodeNum) {
 }
 
 void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
+    Timer probSimTime("problemSimulatorTimer");
+
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
@@ -72,9 +74,13 @@ void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
         individual.evaluateValue(input, compNode);
         fit += fitness(bits, static_cast<int>(individual.outputGene[0].value));
     }
+
+    probSimTime.endTimer();
 }
 
 void BoolProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -116,7 +122,8 @@ void BoolProblem::problemRunner() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        if (printGens)
+            cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
         if (bestFit == pow(2, INPUTS))
             break;
@@ -129,4 +136,6 @@ void BoolProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 }

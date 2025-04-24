@@ -4,7 +4,6 @@ using namespace std;
 using namespace parallel_cgp;
 
 TYPE WaitProblem::fitness(TYPE prev) {
-    waitFunc();
 	return ++prev;
 }
 
@@ -27,6 +26,8 @@ string WaitProblem::evalFunction(int CGPNodeNum) {
 }
 
 void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
+    Timer probSimTime("problemSimulatorTimer");
+
     function<TYPE(int op, TYPE v1, TYPE v2)> compNode =
         [&](int op, TYPE v1, TYPE v2) { return computeNode(op, v1, v2); };
 
@@ -35,11 +36,16 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
         input.push_back(iter);
 
         individual.evaluateValue(input, compNode);
+        waitFunc();
     }
     fit = fitness(fit);
+
+    probSimTime.endTimer();
 }
 
 void WaitProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -83,8 +89,6 @@ void WaitProblem::problemRunner() {
 
         cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
-        if (bestFit == 100)
-            break;
         if (generacija != GENERATIONS - 1)
             cgp.goldMutate(population[bestInd], population);
     }
@@ -94,4 +98,6 @@ void WaitProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 }
