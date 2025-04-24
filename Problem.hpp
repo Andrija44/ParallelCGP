@@ -43,8 +43,8 @@ namespace parallel_cgp {
         int NUM_OPERANDS = 9;
         int BI_OPERANDS = 5;
         int GENERATIONS = 5000;
-        int ROWS = 20;
-        int COLUMNS = 20;
+        int ROWS = 8;
+        int COLUMNS = 8;
         int LEVELS_BACK = 3;
         int INPUTS = 6;
         int OUTPUTS = 1;

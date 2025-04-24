@@ -23,7 +23,7 @@ double ADProblem::fitness(TYPE cash, TYPE maxCash, double avgCash) {
 
     if (maxCash >= STARTING_CASH * 2)
         score += 50;
-    if (cash == 0)
+    if (cash <= 0)
         score -= 100;
     if (maxCash == MAX_CASH)
         score += 150;

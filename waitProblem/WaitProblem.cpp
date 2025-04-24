@@ -4,7 +4,6 @@ using namespace std;
 using namespace parallel_cgp;
 
 TYPE WaitProblem::fitness(TYPE prev) {
-    waitFunc();
 	return ++prev;
 }
 
@@ -35,6 +34,7 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
         input.push_back(iter);
 
         individual.evaluateValue(input, compNode);
+        waitFunc();
     }
     fit = fitness(fit);
 }
