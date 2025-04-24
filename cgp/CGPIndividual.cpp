@@ -51,14 +51,11 @@ void CGPIndividual::printNodes() {
 }
 
 void CGPIndividual::evaluateUsed() {
-    Timer evalUseTime("evaluateUsedTimer");
-
     //#pragma omp parallel for
     for (int m = 0; m < outputs; m++)
         isUsed(outputGene[m].connection);
 
     evalDone = true;
-    evalUseTime.endTimer();
 }
 
 void CGPIndividual::isUsed(int CGPNodeNum) {
@@ -77,8 +74,6 @@ void CGPIndividual::isUsed(int CGPNodeNum) {
 }
 
 void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, TYPE)> &computeNode) {
-    Timer evalValTime("evaluateValueTimer");
-
     clearInd();
 
     for (int l = 0; l < inputs; l++)
@@ -89,8 +84,6 @@ void CGPIndividual::evaluateValue(vector<TYPE> input, function<TYPE(int, TYPE, T
     for (int m = 0; m < outputs; m++)
         //#pragma omp task
         outputGene[m].value = evalNode(outputGene[m].connection, computeNode);
-
-    evalValTime.endTimer();
 }
 
 TYPE CGPIndividual::evalNode(int CGPNodeNum, function<TYPE(int, TYPE, TYPE)> &computeNode) {

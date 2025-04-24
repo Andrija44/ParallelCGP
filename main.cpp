@@ -15,6 +15,8 @@
 using namespace std;
 using namespace parallel_cgp;
 
+#define OMPCGP
+
 #if (defined(_OPENMP) && (defined(OMPCGP) || defined(OMPSIM) || defined(OMPRUN)))
 #define BoolTester ParBoolTester
 #define ParityTester ParParityTester
