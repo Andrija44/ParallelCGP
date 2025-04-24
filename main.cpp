@@ -1,5 +1,9 @@
 #include "Problem.hpp"
 #include "Timer.hpp"
+#include "boolProblem/BoolTester.hpp"
+#include "funcProblem/FuncTester.hpp"
+#include "waitProblem/WaitTester.hpp"
+#include "adProblem/ADTester.hpp"
 #include "boolProblem/BoolProblem.hpp"
 #include "funcProblem/FuncProblem.hpp"
 #include "waitProblem/WaitProblem.hpp"
@@ -11,41 +15,26 @@
 using namespace std;
 using namespace parallel_cgp;
 
+#if (defined(_OPENMP) && (defined(OMPCGP) || defined(OMPSIM) || defined(OMPRUN)))
+#define BoolTester ParBoolTester
+#define ParityTester ParParityTester
+#define FuncTester ParFuncTester
+#define ADTester ParADTester
+#define WaitTester ParWaitTester
+#else
+#define BoolTester SeqBoolTester
+#define ParityTester SeqParityTester
+#define FuncTester SeqFuncTester
+#define ADTester SeqADTester
+#define WaitTester SeqWaitTester
+#endif
+
 int main() {
-    int choice;
-    cout << "Choose which problem to run" << endl << endl;
-    cout << "1 - Boolean problem" << endl;
-    cout << "2 - Parity problem" << endl;
-    cout << "3 - Function problem" << endl;
-    cout << "4 - Acey Deucey problem" << endl;
-    cout << "5 - Wait problem" << endl;
-    cout << endl << "Enter your choice: ";
-    cin >> choice;
-
-    Timer mainTime("mainTimer");
-
-    Problem* problem = nullptr;
-
-    if (choice == 1)
-        problem = new BoolProblem;
-    else if (choice == 2)
-        problem = new ParityProblem;
-    else if (choice == 3)
-        problem = new FuncProblem;
-    else if (choice == 4)
-        problem = new ADProblem;
-    else if (choice == 5)
-        problem = new WaitProblem;
-    else {
-        cout << "Invalid option" << endl;
-        return 1;
-    }
-
-    problem->problemRunner();
-    delete(problem);
-
-    mainTime.endTimer();
-    Timer::printTimes();
+    BoolTester boolTest;
+    ParityTester parityTest;
+    FuncTester funcTest;
+    ADTester adTest;
+    WaitTester waitTest;
 
     return 0;
 }

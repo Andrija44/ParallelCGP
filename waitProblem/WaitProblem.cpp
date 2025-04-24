@@ -45,6 +45,8 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 }
 
 void WaitProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -93,4 +95,6 @@ void WaitProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 }
