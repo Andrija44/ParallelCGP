@@ -42,6 +42,7 @@ namespace parallel_cgp {
          * Funkcija za generiranje inicijalne populacije.<br>
          * Broj jedinki u populaciji ovisi o konstanti POPULATION_SIZE.<br>
          * Ostali parametri su navedeni u konstruktoru.
+         * @param[out] population    Vector populacije koji se puni s generiranim jedinkama.
          */
         void generatePopulation(std::vector<CGPIndividual> &population);
 
@@ -50,7 +51,8 @@ namespace parallel_cgp {
          * Koristi se <b>Goldman Mutacija</b> kojom se u roditeljskoj jedinci mutiraju geni
          * sve dok se ne dode do gena koji se aktivno koristi.
          * Taj gen se jos promjeni i s njime zavrsava mutacija nove jedinke.
-         * @param[in] parent    Najbolja jedinka iz prosle generacija, roditelj za novu.
+         * @param[in] parent        Najbolja jedinka iz prosle generacija, roditelj za novu.
+         * @param[out] population    Vector populacije koji se puni s mutacijama roditelja.
          */
         void goldMutate(CGPIndividual parent, std::vector<CGPIndividual> &population);
     };
