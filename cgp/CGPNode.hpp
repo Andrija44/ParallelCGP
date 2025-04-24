@@ -30,21 +30,6 @@ namespace parallel_cgp {
          * Izlazna vrijednost nakon racunanja vrijednosti.
          */
         TYPE outValue;
-
-        /**
-         * Operator overloading za pisanje gena u datoteku.
-         */
-        friend std::ostream& operator<<(std::ostream& os, const CGPNode& node) {
-            os << node.operand << " " << node.connection1 << " " << node.connection2 << " " << node.used << " " << 0;
-            return os;
-        }
-        /**
-         * Operator overloading za citanje gena iz datoteke.
-         */
-        friend std::istream& operator>>(std::istream& is, CGPNode& node) {
-            is >> node.operand >> node.connection1 >> node.connection2 >> node.used >> node.outValue;
-            return is;
-        }
     };
 }
 

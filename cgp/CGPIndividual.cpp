@@ -117,34 +117,6 @@ void CGPIndividual::clearInd() {
         genes[i].outValue = NAN;
 }
 
-CGPIndividual CGPIndividual::deserialize(istream& is) {
-    int rows, columns, levelsBack, inputs, outputs, evalDone;
-
-    is >> rows >> columns >> levelsBack >> inputs >> outputs >> evalDone;
-
-    size_t genesSize;
-    is >> genesSize;
-    vector<CGPNode> genes;
-    genes.reserve(genesSize);
-    for (size_t i = 0; i < genesSize; ++i) {
-        CGPNode gene;
-        is >> gene;
-        genes.emplace_back(gene);
-    }
-
-    size_t outputGeneSize;
-    is >> outputGeneSize;
-    vector<CGPOutput> outputGene;
-    outputGene.reserve(outputGeneSize);
-    for (size_t i = 0; i < outputGeneSize; ++i) {
-        CGPOutput outGene;
-        is >> outGene;
-        outputGene.emplace_back(outGene);
-    }
-
-    return CGPIndividual(genes, outputGene, rows, columns, levelsBack, inputs, outputs, evalDone);
-}
-
 bool CGPIndividual::findLoops(int CGPNodeNum) {
     branches.clear();
 

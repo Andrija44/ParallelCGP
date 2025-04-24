@@ -26,11 +26,11 @@ namespace parallel_cgp {
         void clearInd();
     public:
         /**
-         * Vector @ref CGPNode koji reprezentira sve ulazne i gene mreze.
+         * Vector CGPNode koji reprezentira sve ulazne i gene mreze.
          */
         std::vector<CGPNode> genes;
         /**
-         * Vector @ref CGPOutput koji reprezentira sve izlazne gene.
+         * Vector CGPOutput koji reprezentira sve izlazne gene.
          */
         std::vector<CGPOutput> outputGene;
         /**
@@ -38,29 +38,17 @@ namespace parallel_cgp {
          * Koristi se za otklanjanje implicitnih petlji u mrezi nodeova.
          */
         std::vector<std::vector<int>> branches;
-        /**
-         * Broj redova u mrezi.
-         */
+        /** Broj redova u mrezi. */
         int rows;
-        /**
-         * Broj stupaca u mrezi.
-         */
+        /** Broj stupaca u mrezi. */
         int columns;
-        /**
-         * Broj stupaca ispred noda na koje se moze spojiti.
-         */
+        /** Broj stupaca ispred noda na koje se moze spojiti. */
         int levelsBack;
-        /**
-         * Broj ulaznih gena.
-         */
+        /** Broj ulaznih gena. */
         int inputs;
-        /**
-         * Broj izlaznih gena.
-         */
+        /** Broj izlaznih gena. */
         int outputs;
-        /**
-         * Varijabla koja oznacava je li se proslo kroz mrezu i oznacilo koji se nodeovi koriste.
-         */
+        /** Varijabla koja oznacava je li se proslo kroz mrezu i oznacilo koji se nodeovi koriste. */
         int evalDone;
 
         /**
@@ -92,7 +80,8 @@ namespace parallel_cgp {
         void printNodes();
         /**
          * Metoda za izracunavanje vrijednosti u izlaznim genima za dane ulazne vrijednosti.
-         * @param[in] input Vector ulazniih vrijednosti tipa double.
+         * @param[in] input         Vector ulaznih vrijednosti tipa TYPE (ovisno o problemu).
+         * @param[in] computeNode   Funkcija koja racuna izlaznu vrijednost nodeova.
          */
         void evaluateValue(std::vector<TYPE> input, std::function<TYPE(int, TYPE, TYPE)> &computeNode);
         /**
@@ -100,58 +89,15 @@ namespace parallel_cgp {
          */
         void evaluateUsed();
         /**
-         * Staticka metoda za ucitavanje jedinke iz datoteke.
-         * @param[in] is    Istream za ulaznu datoteku.
-         */
-        static CGPIndividual deserialize(std::istream& is);
-        /**
          * Rekurzivna funkcija za pronalazak petlji u mrezi.
          * @param[in] nodeNum  Broj trenutnog noda.
-         * @returns             True ako je pronadjena petlja, inace false.
+         * @returns            True ako je pronadjena petlja, inace false.
          */
         bool findLoops(int nodeNum);
         /**
          * Metoda za razrjesavanje petlji u mrezi.
          */
         void resolveLoops();
-
-        /**
-         * Operator overloading za pisanje najbolje jedinke u datoteku.
-         */
-        friend std::ostream& operator<<(std::ostream& os, const CGPIndividual& ind) {
-            os << ind.rows << " " << ind.columns << " " << ind.levelsBack << " "
-                << ind.inputs << " " << ind.outputs << " " << ind.evalDone << "\n";
-
-            os << ind.genes.size() << "\n";
-            for (const auto& gene : ind.genes)
-                os << gene << "\n";
-
-            os << ind.outputGene.size() << "\n";
-            for (const auto& output : ind.outputGene)
-                os << output << "\n";
-
-            return os;
-        }
-        /**
-         * Operator overloading za citanje najbolje jedinke iz datoteke.
-         */
-        friend std::istream& operator>>(std::istream& is, CGPIndividual& ind) {
-            is >> ind.rows >> ind.columns >> ind.levelsBack
-                >> ind.inputs >> ind.outputs >> ind.evalDone;
-
-            size_t genesSize, outputGeneSize;
-            is >> genesSize;
-            ind.genes.resize(genesSize);
-            for (auto& gene : ind.genes)
-                is >> gene;
-
-            is >> outputGeneSize;
-            ind.outputGene.resize(outputGeneSize);
-            for (auto& output : ind.outputGene)
-                is >> output;
-
-            return is;
-        }
     };
 }
 
