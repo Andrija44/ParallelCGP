@@ -153,7 +153,7 @@ bool CGPIndividual::loopFinder(int CGPNodeNum, vector<int> CGPNodeSet) {
 
 void CGPIndividual::resolveLoops() {
 
-    Timer resLoopTime("resLoopTimer");
+    Timer resLoopTime("resolveLoopsTimer");
 
     random_device rd;
     mt19937 gen(rd());
