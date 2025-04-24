@@ -24,7 +24,7 @@ namespace parallel_cgp {
 		const static int OUTPUTS = 1;
 		const static int MAX_CASH = 1000;
 		const static int STARTING_CASH = 100;
-		inline const static double CARD_SETS = 500;
+		const static int CARD_SETS = 500;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
