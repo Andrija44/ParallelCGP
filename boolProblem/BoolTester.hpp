@@ -6,16 +6,26 @@
 #include "BoolProblem.hpp"
 
 namespace parallel_cgp {
+	/**
+	 * Struktura koja se koristi za upravljanje test parametara.
+	 */
 	struct BoolParam {
 		BoolParam() {}
 		BoolParam(int gens, int rows, int cols, int levels, int pop) : gens(gens), rows(rows), cols(cols), levels(levels), pop(pop) {}
 		int gens;
+		/** Broj redova za CGP. */
 		int rows;
+		/** Broj stupaca za CGP. */
 		int cols;
+		/** Broj razina iza na koliko se nodeovi mogu spajati u CGP. */
 		int levels;
+		/** Velicina populacije. */
 		int pop;
 	};
 
+	/**
+	 * Klasa koja opisuje sekvencijski tester Bool problema.
+	 */
 	class SeqBoolTester : private Tester, private BoolProblem
 	{
 	private:
@@ -39,6 +49,10 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		SeqBoolTester() : Tester("SeqBoolTest") {
 			for (int f = 0; f < (sizeof(boolFuncs) / sizeof(*boolFuncs)); f++) {
 				for (int i = 0; i < ROUNDS; i++) {
@@ -51,6 +65,9 @@ namespace parallel_cgp {
 		}
 	};
 
+	/**
+	 * Klasa koja opisuje paralelni tester Bool problema.
+	 */
 	class ParBoolTester : private Tester, private BoolProblem
 	{
 	private:
@@ -76,6 +93,10 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		ParBoolTester() : Tester("ParBoolTest") {
 			for (int f = 0; f < (sizeof(boolFuncs) / sizeof(*boolFuncs)); f++) {
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
@@ -90,6 +111,9 @@ namespace parallel_cgp {
 		}
 	};
 
+	/**
+	 * Klasa koja opisuje sekvencijski tester Parity problema.
+	 */
 	class SeqParityTester : private Tester
 	{
 	private:
@@ -109,6 +133,10 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		SeqParityTester() : Tester("SeqParityTest") {
 			for (int f = 0; f < (sizeof(parityFuncs) / sizeof(*parityFuncs)); f++)
 				for (int i = 0; i < ROUNDS; i++)
@@ -116,6 +144,9 @@ namespace parallel_cgp {
 		}
 	};
 
+	/**
+	 * Klasa koja opisuje paralelni tester Parity problema.
+	 */
 	class ParParityTester : private Tester
 	{
 	private:
@@ -137,6 +168,10 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		ParParityTester() : Tester("ParParityTest") {
 			for (int f = 0; f < (sizeof(parityFuncs) / sizeof(*parityFuncs)); f++)
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++)

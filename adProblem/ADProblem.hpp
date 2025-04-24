@@ -14,9 +14,12 @@ namespace parallel_cgp {
 	class ADProblem : public Problem {
 	private:
 		/**
-		 * Nepromjenjivi parametri za ovaj problem.<br>
-		 * Operandi jer ovise o funkcijama.<br>
-		 * A broj inputa i outputa jer o njemu ovisi funkcija koja se trazi.
+		 * Nepromjenjivi parametri za Acey Deucey problem.<br>
+		 * Broj operanada koji se koriste.<br>
+		 * Broj inputa i outputa jer o njima ovisi funkcija koja se trazi.<br>
+		 * Pocetni novci i maksimalni novci za igru.<br>
+		 * Broj setova karata koji se koristi ucenje.<br>
+		 * Tocka u kojoj se igra prekida.
 		 */
 		const static int NUM_OPERANDS = 4;
 		const static int BI_OPERANDS = 4;
@@ -25,6 +28,7 @@ namespace parallel_cgp {
 		const static int MAX_CASH = 1000;
 		const static int STARTING_CASH = 100;
 		const static int CARD_SETS = 500;
+		const static int THRESHOLD = STARTING_CASH * 3;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -35,7 +39,6 @@ namespace parallel_cgp {
 		int COLUMNS = 8;
 		int LEVELS_BACK = 3;
 		int POPULATION_SIZE = 15;
-		int THRESHOLD = STARTING_CASH * 3;
 
 		/**
 		 * Setovi karata koji se koriste u igri
@@ -57,7 +60,7 @@ namespace parallel_cgp {
 		 */
 		ADProblem() {};
 		/**
-		 * Konstruktor koji prima sve promjenjive vrijednosti za AD problem.
+		 * Konstruktor koji prima sve promjenjive vrijednosti za Acey Deucey problem.
 		 */
 		ADProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE)
 			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), POPULATION_SIZE(POPULATION_SIZE) {};

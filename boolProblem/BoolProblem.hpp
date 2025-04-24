@@ -10,8 +10,7 @@
 
 namespace parallel_cgp {
 	/**
-	 * Klasa koja opisuje problem pronalaska boolean funkcije.<br>
-	 * Moze se koristiti i za paritetni problem
+	 * Klasa koja opisuje problem pronalaska boolean funkcije.
 	 */
 	class BoolProblem : public Problem {
 	protected:
@@ -64,6 +63,10 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		BoolProblem() {};
+		/**
+		 * Konstruktor koji prima sve promjenjive vrijednosti za bool problem osim funkcije.<br>
+		 * Primarno se koristi kod kreacije ParityProblem klase.
+		 */
 		BoolProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE)
 			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), POPULATION_SIZE(POPULATION_SIZE) {
 		};

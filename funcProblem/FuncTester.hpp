@@ -6,17 +6,29 @@
 #include "FuncProblem.hpp"
 
 namespace parallel_cgp {
+	/**
+	 * Struktura koja se koristi za upravljanje test parametara.
+	 */
 	struct FuncParam {
 		FuncParam() {}
 		FuncParam(int gens, int rows, int cols, int levels, int pop, int thresh) : gens(gens), rows(rows), cols(cols), levels(levels), pop(pop), thresh(thresh) {}
+		/** Broj generacija po testu. */
 		int gens;
+		/** Broj redova za CGP. */
 		int rows;
+		/** Broj stupaca za CGP. */
 		int cols;
+		/** Broj razina iza na koliko se nodeovi mogu spajati u CGP. */
 		int levels;
+		/** Velicina populacije. */
 		int pop;
+		/** Vrijednost nakon koje se zaustavlja problem. Ako je manja od 0 onda se gledaju generacije. */
 		int thresh;
 	};
 
+	/**
+	 * Klasa koja opisuje sekvencijski tester Func problema.
+	 */
 	class SeqFuncTester : private Tester
 	{
 	private:
@@ -40,6 +52,10 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		SeqFuncTester() : Tester("SeqFuncTest") {
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
 				for (int i = 0; i < ROUNDS; i++) {
@@ -52,6 +68,9 @@ namespace parallel_cgp {
 		}
 	};
 
+	/**
+	 * Klasa koja opisuje sekvencijski tester Func problema.
+	 */
 	class ParFuncTester : private Tester
 	{
 	private:
@@ -77,8 +96,11 @@ namespace parallel_cgp {
 			saveResults(testName, GENERATIONS, ROWS, COLUMNS, LEVELS_BACK, POPULATION_SIZE);
 		}
 	public:
+		/**
+		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
+		 * Parametar ROUNDS je opisan u Tester.
+		 */
 		ParFuncTester() : Tester("ParFuncTest") {
-			
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
 					for (int i = 0; i < ROUNDS; i++) {
