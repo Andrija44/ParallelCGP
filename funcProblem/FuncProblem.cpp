@@ -113,6 +113,8 @@ void FuncProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 }
 
 void FuncProblem::problemRunner() {
+    Timer probRunTime("problemRunnerTimer");
+
     CGP cgp(ROWS, COLUMNS, LEVELS_BACK, INPUTS, OUTPUTS, NUM_OPERANDS, BI_OPERANDS, POPULATION_SIZE);
 
     vector<CGPIndividual> population(POPULATION_SIZE);
@@ -150,7 +152,8 @@ void FuncProblem::problemRunner() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        if(printGens)
+            cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
         if (bestFit <= THRESHOLD)
             break;
@@ -163,4 +166,6 @@ void FuncProblem::problemRunner() {
     isSimulated = true;
 
     printFunction();
+
+    probRunTime.endTimer();
 }

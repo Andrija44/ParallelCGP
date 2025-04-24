@@ -14,11 +14,6 @@ namespace parallel_cgp {
 	class FuncProblem : public Problem {
 	private:
 		/**
-		 * Naziv datoteke koja sadrzi najbolju jedinku.
-		 */
-		const std::string bestFile = "func_best.txt";
-
-		/**
 		 * Nepromjenjivi parametri za ovaj problem.<br>
 		 * Operandi jer ovise o funkcijama.<br>
 		 * A broj inputa i outputa jer o njemu ovisi funkcija koja se trazi.
@@ -27,7 +22,6 @@ namespace parallel_cgp {
 		const static int BI_OPERANDS = 5;
 		const static int INPUTS = 2;
 		const static int OUTPUTS = 1;
-		const static int THRESHOLD = 0;
 
 		/**
 		 * Promjenjivi parametri za ovaj problem.<br>
@@ -38,6 +32,7 @@ namespace parallel_cgp {
 		int COLUMNS = 8;
 		int LEVELS_BACK = 1;
 		int POPULATION_SIZE = 15;
+		int THRESHOLD = 0;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
@@ -47,7 +42,7 @@ namespace parallel_cgp {
 		/**
 		 * Funkcija koja oznacava funkciju koju CGP pokusava pronaci.
 		 */
-		const std::function<TYPE(TYPE x, TYPE y)> func =
+		std::function<TYPE(TYPE x, TYPE y)> func =
 			[](TYPE x, TYPE y) { return (pow(x, 2) + 2 * x * y + y); };
 
 		TYPE computeNode(int operand, TYPE value1, TYPE value2) override;
@@ -59,6 +54,12 @@ namespace parallel_cgp {
 		 * Osnovni kostruktor koji kreira osnovnu jedinku na bazi prije zadanih vrijednosti.
 		 */
 		FuncProblem() {};
+		/**
+		 * Konstruktor koji prima sve promjenjive vrijednosti za func problem.
+		 */
+		FuncProblem(int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int THRESHOLD, std::function<TYPE(TYPE x, TYPE y)> func)
+			: GENERATIONS(GENERATIONS), ROWS(ROWS), COLUMNS(COLUMNS), LEVELS_BACK(LEVELS_BACK), POPULATION_SIZE(POPULATION_SIZE), THRESHOLD(THRESHOLD), func(func) {
+		};
 
 		/**
 		 * Metoda za pokretanje problema.
