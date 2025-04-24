@@ -23,31 +23,29 @@ namespace parallel_cgp {
 	class Timer
 	{
 	private:
-		inline static std::map<std::string, double> mapa;
+		inline static std::map<std::string, std::vector<double>> mapa;
 
 		std::string funcName;
 		TIME_UNIT start;
 		double end;
 	public:
-		Timer(std::string funcName) : funcName(funcName), start(timerFunc()), end(0) {
-			#pragma omp critical
-			{
-				if (!parallel_cgp::Timer::mapa.count(funcName))
-					parallel_cgp::Timer::mapa[funcName] = 0;
-			}
-		}
+		Timer(std::string funcName) : funcName(funcName), start(timerFunc()), end(0) {}
 
 		void endTimer() {
 			end = timerDiff(start, timerFunc());
 
-			#pragma omp atomic update
-			parallel_cgp::Timer::mapa[funcName] += end;
-			
+			#pragma omp critical
+			parallel_cgp::Timer::mapa[funcName].push_back(end);
 		}
 	
 		static void printTimes() {
 			for (const auto& [key, value] : parallel_cgp::Timer::mapa)
-				std::cout << '[' << key << "] = " << value << "; " << std::endl;
+				for (const auto& val : value)
+					std::cout << '[' << key << "] = " << val << "; " << std::endl;
+		}
+
+		static void clearTimes() {
+			parallel_cgp::Timer::mapa.clear();
 		}
 	};
 }
