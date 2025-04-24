@@ -36,8 +36,8 @@ namespace parallel_cgp {
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
 		int GENERATIONS = 200;
-		int ROWS = 15;
-		int COLUMNS = 15;
+		int ROWS = 8;
+		int COLUMNS = 8;
 		int LEVELS_BACK = 3;
 		int POPULATION_SIZE = 15;
 

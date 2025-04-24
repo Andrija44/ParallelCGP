@@ -54,18 +54,22 @@ void WaitProblem::problemRunner() {
         random_device rd;
         mt19937 gen(rd());
 
+        #pragma omp parallel for num_threads(omp_get_max_threads() / 2)
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
             TYPE fit = generacija;
             problemSimulator(population[clan], fit);
 
-            if (fit > bestFit) {
-                bestFit = fit;
-                bestInds.clear();
-                bestInds.push_back(clan);
+            #pragma omp critical
+            {
+                if (fit > bestFit) {
+                    bestFit = fit;
+                    bestInds.clear();
+                    bestInds.push_back(clan);
+                }
+                else if (fit == bestFit)
+                    bestInds.push_back(clan);
             }
-            else if (fit == bestFit)
-                bestInds.push_back(clan);
         }
 
         if (bestInds.size() > 1)
