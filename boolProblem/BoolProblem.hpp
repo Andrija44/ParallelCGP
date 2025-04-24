@@ -29,7 +29,7 @@ namespace parallel_cgp {
 		 * Promjenjivi parametri za ovaj problem.<br>
 		 * Svi su detaljno opisani u CGP klasi.
 		 */
-		int GENERATIONS = 200;
+		int GENERATIONS = 5000;
 		int ROWS = 10;
 		int COLUMNS = 10;
 		int LEVELS_BACK = 3;
