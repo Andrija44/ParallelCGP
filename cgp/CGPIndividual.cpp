@@ -166,7 +166,7 @@ void CGPIndividual::resolveLoops() {
 
     for (int m = 0; m < outputs; m++) {
         while (findLoops(outputGene[m].connection)) {
-            //#pragma omp parallel for firstprivate(gen) num_threads(omp_get_max_threads() / 2)
+            //#pragma omp parallel for firstprivate(gen) num_threads(omp_get_max_threads())
             for (int i = 0; i < branches.size(); i++) {
                 uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
                 int cell1, cell2, con1, con2, con;

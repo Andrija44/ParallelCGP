@@ -10,7 +10,7 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
     random_device rd;
     mt19937 gen(rd());
 
-    #pragma omp parallel for schedule(dynamic) firstprivate(gen)
+    #pragma omp parallel for schedule(dynamic) firstprivate(gen) num_threads(omp_get_max_threads())
     for (int i = 0; i < populationSize; i++) {
         uniform_int_distribution<> operandDis(1, operands);
         uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
@@ -91,7 +91,7 @@ void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
     random_device rd;
     mt19937 gen(rd());
 
-    #pragma omp parallel for schedule(dynamic) shared(parent) firstprivate(gen) num_threads(omp_get_max_threads() / 2)
+    #pragma omp parallel for schedule(dynamic) shared(parent) firstprivate(gen) num_threads(omp_get_max_threads())
     for (int n = 1; n < populationSize; n++) {
         uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
         uniform_int_distribution<> geneDis(0, 2);
