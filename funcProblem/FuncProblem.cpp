@@ -94,7 +94,7 @@ void FuncProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
 
     TYPE N = 0;
 
-    #pragma omp parallel for collapse(2) reduction(+:N, fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads() / 2)
+    #pragma omp parallel for collapse(2) reduction(+:N, fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads())
     for (int x = -20; x < 20; x++) {
         for (int y = -20; y < 20; y++) {
             TYPE xd = static_cast<TYPE>(x) / 2.0;

@@ -79,7 +79,7 @@ void ADProblem::problemSimulator(CGPIndividual& individual, double& fit) {
     int cash = STARTING_CASH, maxCash = STARTING_CASH;
     double avgCash = 0;
 
-    #pragma omp parallel for reduction(+:avgCash) reduction(max:maxCash) firstprivate(individual) shared(cash, compNode) num_threads(omp_get_max_threads() / 2)
+    #pragma omp parallel for reduction(+:avgCash) reduction(max:maxCash) firstprivate(individual) shared(cash, compNode) num_threads(omp_get_max_threads())
     for (int i = 0; i < CARD_SETS; i++) {
         int card, win, privC;
         card = static_cast<int>(sets[i].back());

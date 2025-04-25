@@ -64,7 +64,7 @@ void BoolProblem::problemSimulator(CGPIndividual& individual, TYPE &fit) {
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
-    #pragma omp parallel for reduction(+:fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads() / 2)
+    #pragma omp parallel for reduction(+:fit) firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads())
     for (int perm = 0; perm < static_cast<int>(pow(2, INPUTS)); perm++) {
         bitset<INPUTS> bits(perm);
         vector<double> input;
