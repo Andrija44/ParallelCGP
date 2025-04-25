@@ -60,7 +60,7 @@ void WaitProblem::problemRunner() {
         random_device rd;
         mt19937 gen(rd());
 
-        #pragma omp parallel for num_threads(omp_get_max_threads() / 2)
+        #pragma omp parallel for num_threads(omp_get_max_threads())
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
             TYPE fit = generacija;
