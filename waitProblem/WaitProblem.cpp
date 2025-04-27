@@ -87,7 +87,8 @@ void WaitProblem::problemRunner() {
 
         bestInd = bestInds[bestDis(gen)];
 
-        cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
+        if(printGens)
+            cout << "Gen: " << generacija << "; Fitness: " << bestFit << "; Indeks: " << bestInd << endl;
 
         if (generacija != GENERATIONS - 1)
             cgp.goldMutate(population[bestInd], population);

@@ -28,9 +28,9 @@ namespace parallel_cgp {
 		int OUTPUTS = 1;
 
 		/**
-		 * Varijabla koja opisuje koliko ce se cekati u milisekundama.
+		 * Varijabla koja opisuje koliko ce se cekati u nanosekundama.
 		 */
-		int WAIT_TIME = 1;
+		int WAIT_TIME = 50;
 
 		/**
 		 * Parametar koji oznacava je li simulacija obavljena.
@@ -41,7 +41,7 @@ namespace parallel_cgp {
 		 * Wiat funkcija koja oznacava cekanje.
 		 */
 		const std::function<void()> waitFunc =
-			[&]() { std::this_thread::sleep_for(std::chrono::milliseconds(WAIT_TIME)); };
+			[&]() { std::this_thread::sleep_for(std::chrono::nanoseconds(WAIT_TIME)); };
 
 		TYPE fitness(TYPE prev) override;
 		void problemSimulator(CGPIndividual& individual, TYPE& fit) override;
