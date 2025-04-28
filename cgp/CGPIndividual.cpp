@@ -161,59 +161,57 @@ void CGPIndividual::resolveLoops() {
 
     Timer resLoopTime("resolveLoopsTimer");
 
-    random_device rd;
-    mt19937 gen(rd());
-
     for (int m = 0; m < outputs; m++) {
         while (findLoops(outputGene[m].connection)) {
-            //#pragma omp parallel for firstprivate(gen) num_threads(omp_get_max_threads())
-            for (int i = 0; i < branches.size(); i++) {
-                uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
-                int cell1, cell2, con1, con2, con;
+            //#pragma omp parallel num_threads(omp_get_max_threads())
+            {
+                boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
+                //#pragma omp for schedule(dynamic)
+                for (int i = 0; i < branches.size(); i++) {
+                    boost::random::uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
+                    int cell1, cell2, con1, con2, con;
 
-                #pragma omp atomic read
-                cell1 = branches[i][branches[i].size() - 2];
-                #pragma omp atomic read
-                cell2 = branches[i][branches[i].size() - 1];
+                    cell1 = branches[i][branches[i].size() - 2];
+                    cell2 = branches[i][branches[i].size() - 1];
 
-                #pragma omp atomic read
-                con1 = genes[cell1].connection1;
-                #pragma omp atomic read
-                con2 = genes[cell1].connection2;
+                    //#pragma omp atomic read
+                    con1 = genes[cell1].connection1;
+                    //#pragma omp atomic read
+                    con2 = genes[cell1].connection2;
 
-                if (con1 == cell2) {
-                    while (true) {
-                        #pragma omp atomic write
-                        genes[cell1].connection1 = connectionDis(gen);
+                    if (con1 == cell2) {
+                        while (true) {
+                            con = connectionDis(gen);
 
-                        #pragma omp atomic read
-                        con = genes[cell1].connection1;
-
-                        if (con < inputs)
-                            break;
-                        if ((con % columns) == (cell1 % columns))
-                            continue;
-                        else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
-                            continue;
-                        else
-                            break;
+                            if (con < inputs)
+                                break;
+                            if ((con % columns) == (cell1 % columns))
+                                continue;
+                            else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
+                                continue;
+                            else {
+                                //#pragma omp atomic write
+                                genes[cell1].connection1 = con;
+                                break;
+                            }
+                        }
                     }
-                }
-                else if (con2 == cell2) {
-                    while (true) {
-                        #pragma omp atomic write
-                        genes[cell1].connection2 = connectionDis(gen);
-
-                        #pragma omp atomic read
-                        con = genes[cell1].connection2;
-                        if (con < inputs)
-                            break;
-                        if ((con % columns) == (cell1 % columns))
-                            continue;
-                        else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
-                            continue;
-                        else
-                            break;
+                    else if (con2 == cell2) {
+                        while (true) {
+                            con = connectionDis(gen);
+                            
+                            if (con < inputs)
+                                break;
+                            if ((con % columns) == (cell1 % columns))
+                                continue;
+                            else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
+                                continue;
+                            else {
+                                //#pragma omp atomic write
+                                genes[cell1].connection2 = con;
+                                break;
+                            }
+                        }
                     }
                 }
             }
