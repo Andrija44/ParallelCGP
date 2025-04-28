@@ -182,6 +182,8 @@ void CGPIndividual::resolveLoops() {
                     if (con1 == cell2) {
                         while (true) {
                             con = connectionDis(gen);
+                            //#pragma omp atomic write
+                            genes[cell1].connection1 = con;
 
                             if (con < inputs)
                                 break;
@@ -189,16 +191,15 @@ void CGPIndividual::resolveLoops() {
                                 continue;
                             else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
                                 continue;
-                            else {
-                                //#pragma omp atomic write
-                                genes[cell1].connection1 = con;
+                            else
                                 break;
-                            }
                         }
                     }
                     else if (con2 == cell2) {
                         while (true) {
                             con = connectionDis(gen);
+                            //#pragma omp atomic write
+                            genes[cell1].connection2 = con;
                             
                             if (con < inputs)
                                 break;
@@ -206,11 +207,8 @@ void CGPIndividual::resolveLoops() {
                                 continue;
                             else if (((con - inputs) % columns) > (((cell1 - inputs) % columns) + levelsBack))
                                 continue;
-                            else {
-                                //#pragma omp atomic write
-                                genes[cell1].connection2 = con;
+                            else
                                 break;
-                            }
                         }
                     }
                 }
