@@ -123,10 +123,9 @@ void ADProblem::problemRunner() {
 
     cgp.generatePopulation(population);
 
-    random_device rd;
-    mt19937 gen(rd());
+    boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
-    uniform_int_distribution<> cardDis(1, 13);
+    boost::random::uniform_int_distribution<> cardDis(1, 13);
 
     for (int j = 0; j < CARD_SETS; j++) {
         vector<double> set;
@@ -145,8 +144,6 @@ void ADProblem::problemRunner() {
         double bestFit = DBL_MIN;
         bestInd = 0;
         vector<int> bestInds;
-        random_device rd;
-        mt19937 gen(rd());
 
         #pragma omp parallel for num_threads(omp_get_max_threads())
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
@@ -171,7 +168,7 @@ void ADProblem::problemRunner() {
         if (bestInds.size() == 0)
             bestInds.push_back(0);
 
-        uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size() - 1));
+        boost::random::uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size() - 1));
 
         bestInd = bestInds[bestDis(gen)];
 
@@ -199,10 +196,9 @@ void ADProblem::playGame() {
     function<double(int op, double v1, double v2)> compNode =
         [&](int op, double v1, double v2) { return computeNode(op, static_cast<TYPE>(v1), static_cast<TYPE>(v2)); };
 
-    random_device rd;
-    mt19937 gen(rd());
+    boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
-    uniform_int_distribution<> cardDis(1, 13);
+    boost::random::uniform_int_distribution<> cardDis(1, 13);
 
     int steps = 0;
     int cash = STARTING_CASH, maxCash = STARTING_CASH;

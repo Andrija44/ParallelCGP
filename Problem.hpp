@@ -8,6 +8,8 @@
 #include <random>
 #include <cfloat>
 #include <climits>
+#include <chrono>
+#include <boost/random.hpp>
 
 namespace parallel_cgp {
 	class Problem {

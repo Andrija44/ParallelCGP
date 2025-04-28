@@ -14,6 +14,7 @@
 #include <sstream>
 #include <vector>
 #include <omp.h>
+#include <boost/random.hpp>
 
 namespace parallel_cgp {
     /**
