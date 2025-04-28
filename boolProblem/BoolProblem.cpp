@@ -92,8 +92,7 @@ void BoolProblem::problemRunner() {
         TYPE bestFit = INT_MIN;
         bestInd = 0;
         vector<int> bestInds;
-        random_device rd;
-        mt19937 gen(rd());
+        boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
         for (int clan = 0; clan < POPULATION_SIZE; clan++) {
 
@@ -114,7 +113,7 @@ void BoolProblem::problemRunner() {
         if (bestInds.size() == 0)
             bestInds.push_back(0);
 
-        uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size() - 1));
+        boost::random::uniform_int_distribution<> bestDis(0, static_cast<int>(bestInds.size() - 1));
 
         bestInd = bestInds[bestDis(gen)];
 

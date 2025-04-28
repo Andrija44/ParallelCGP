@@ -7,13 +7,12 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
     // vrijeme za izvodenje cijele funkcije
     Timer genTime("generatePopulationTimer");
 
-    random_device rd;
-    mt19937 gen(rd());
+    boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
     for (int i = 0; i < populationSize; i++) {
-        uniform_int_distribution<> operandDis(1, operands);
-        uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
-        uniform_int_distribution<> outputDis(0, rows * columns + inputs - 1);
+        boost::random::uniform_int_distribution<> operandDis(1, operands);
+        boost::random::uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
+        boost::random::uniform_int_distribution<> outputDis(0, rows * columns + inputs - 1);
 
         vector<CGPNode> genes;
         vector<CGPOutput> outputGene;
@@ -87,15 +86,14 @@ void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
         parent.evaluateUsed();
     population[0] = parent;
 
-    random_device rd;
-    mt19937 gen(rd());
+    boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
     for (int n = 1; n < populationSize; n++) {
-        uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
-        uniform_int_distribution<> geneDis(0, 2);
-        uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
-        uniform_int_distribution<> operandDis(1, operands);
-        uniform_int_distribution<> outputDis(0, parent.outputs - 1);
+        boost::random::uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
+        boost::random::uniform_int_distribution<> geneDis(0, 2);
+        boost::random::uniform_int_distribution<> connectionDis(0, static_cast<int>(parent.genes.size()) - 1);
+        boost::random::uniform_int_distribution<> operandDis(1, operands);
+        boost::random::uniform_int_distribution<> outputDis(0, parent.outputs - 1);
 
         vector<CGPNode> genes = parent.genes;
         vector<CGPOutput> outputGene = parent.outputGene;

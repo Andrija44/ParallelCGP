@@ -127,13 +127,12 @@ void CGPIndividual::resolveLoops() {
 
     Timer resLoopTime("resolveLoopsTimer");
 
-    random_device rd;
-    mt19937 gen(rd());
+    boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
 
     for (int m = 0; m < outputs; m++) {
         while (findLoops(outputGene[m].connection)) {
             for (int i = 0; i < branches.size(); i++) {
-                uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
+                boost::random::uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
                 int cell1 = branches[i][branches[i].size() - 2];
                 int cell2 = branches[i][branches[i].size() - 1];
 

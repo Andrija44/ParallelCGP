@@ -12,7 +12,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-#include <random>
+#include <boost/random.hpp>
 
 namespace parallel_cgp {
     /**
