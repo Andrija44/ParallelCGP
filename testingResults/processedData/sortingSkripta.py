@@ -6,10 +6,8 @@ for subdir, dirs, files in os.walk('../rawData'):
     for file in files:
         filename = subdir + os.sep + file
 
-        if filename.endswith('Formated.csv'):
-            continue
         if filename.endswith(".csv"):
-            print(filename.removeprefix('../rawData').removesuffix('.csv') + 'Formated.csv')
+            print(filename.removeprefix('../rawData').removesuffix('.csv') + '.csv')
 
             ext = max(open(filename, 'r'), key=lambda s: s.count(',')).count(',')
             brTest = 0
@@ -44,4 +42,4 @@ for subdir, dirs, files in os.walk('../rawData'):
             print(newDf)
 
             # os.remove(filename)
-            newDf.to_csv('./' + filename.removeprefix('../rawData').removesuffix('.csv') + 'Formated.csv', index=False)
+            newDf.to_csv('./' + filename.removeprefix('../rawData').removesuffix('.csv') + '.csv', index=False)

@@ -54,7 +54,7 @@ namespace parallel_cgp {
 		/** Velicina populacije za veliki test. */
 		const static int LARGE_POP_SIZE = 16;
 		/** Koje ce se sve kolicine dretvi koristiti u testovima. */
-		inline const static int threadNums[6] = { 1, 2, 4, 8, 16, 32 };
+		inline const static int threadNums[5] = { 1, 2, 4, 8, 16 };
 		/**@}*/
 
 		/**
