@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include_directories(include)
 
 find_package(OpenMP REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost CONFIG COMPONENTS program_options random REQUIRED)
 
 add_executable(${PROJECT_NAME}
         cgp/CGP.cpp cgp/CGPIndividual.cpp boolProblem/BoolProblem.cpp main.cpp adProblem/ADProblem.cpp funcProblem/FuncProblem.cpp waitProblem/WaitProblem.cpp)

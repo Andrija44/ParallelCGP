@@ -56,7 +56,13 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		SeqFuncTester() : Tester("SeqFuncTest") {
+		SeqFuncTester(FuncParam customParams) : Tester((customParams.pop == 0) ? "SeqFuncTest" : "CustomSeqFuncTest") {
+			if(customParams.pop != 0) {
+				for(int i = 0; i < ROUNDS; i++)
+					test("CustomSeqFuncTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, customParams.thresh, func[0]);
+				return;
+			}
+
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
 				for (int i = 0; i < ROUNDS; i++) {
 					if (f < 3)
@@ -100,7 +106,15 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		ParFuncTester() : Tester("ParFuncTest") {
+		ParFuncTester(FuncParam customParams) : Tester((customParams.pop == 0) ? "ParFuncTest" : "CustomParFuncTest") {
+			if(customParams.pop != 0) {
+				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+					for(int i = 0; i < ROUNDS; i++)
+						test("CustomParFuncTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, customParams.thresh, func[0], threadNums[t]);
+					return;
+				}
+			}
+
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
 					for (int i = 0; i < ROUNDS; i++) {

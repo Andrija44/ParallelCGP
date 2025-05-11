@@ -53,7 +53,13 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		SeqBoolTester() : Tester("SeqBoolTest") {
+		SeqBoolTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "SeqBoolTest" : "CustomSeqBoolTest") {
+			if(customParams.pop != 0) {
+				for(int i = 0; i < ROUNDS; i++)
+					test("CustomSeqBoolTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, func[0]);
+				return;
+			}
+			
 			for (int f = 0; f < (sizeof(boolFuncs) / sizeof(*boolFuncs)); f++) {
 				for (int i = 0; i < ROUNDS; i++) {
 					if (f < 3)
@@ -97,7 +103,15 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		ParBoolTester() : Tester("ParBoolTest") {
+		ParBoolTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "ParBoolTest" : "CustomParBoolTest") {
+			if(customParams.pop != 0) {
+				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+					for(int i = 0; i < ROUNDS; i++)
+						test("CustomParBoolTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, func[0], threadNums[t]);
+					return;
+				}
+			}
+
 			for (int f = 0; f < (sizeof(boolFuncs) / sizeof(*boolFuncs)); f++) {
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
 					for (int i = 0; i < ROUNDS; i++) {
@@ -137,7 +151,13 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		SeqParityTester() : Tester("SeqParityTest") {
+		SeqParityTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "SeqParityTest" : "CustomSeqParityTest") {
+			if(customParams.pop != 0) {
+				for(int i = 0; i < ROUNDS; i++)
+					test("CustomSeqParityTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop);
+				return;
+			}
+
 			for (int f = 0; f < (sizeof(parityFuncs) / sizeof(*parityFuncs)); f++)
 				for (int i = 0; i < ROUNDS; i++)
 					test(parityFuncs[f], params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop);
@@ -172,7 +192,15 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		ParParityTester() : Tester("ParParityTest") {
+		ParParityTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "ParParityTest" : "CustomParParityTest") {
+			if(customParams.pop != 0) {
+				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+					for(int i = 0; i < ROUNDS; i++)
+						test("CustomParParityTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, threadNums[t]);
+					return;
+				}
+			}
+
 			for (int f = 0; f < (sizeof(parityFuncs) / sizeof(*parityFuncs)); f++)
 				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++)
 					for (int i = 0; i < ROUNDS; i++)
