@@ -39,11 +39,12 @@ int main(int ac, char** av) {
         po::options_description desc("Allowed options");
         desc.add_options()
             ("help,h", "produce help message")
-            ("bool,b", "enable bool test")
-            ("parity,p", "enable parity test")
-            ("func,f", "enable func test")
-            ("acey,a", "enable acey test")
-            ("wait,w", "enable wait test")
+            ("test,t", "enable testing")
+            ("bool,b", "enable bool problem")
+            ("parity,p", "enable parity problem")
+            ("func,f", "enable func problem")
+            ("acey,a", "enable acey problem")
+            ("wait,w", "enable wait problem")
             ("custom,c", po::value<std::vector<int>>()->multitoken(), "custom test values")
             ;
     
@@ -60,16 +61,51 @@ int main(int ac, char** av) {
             return 1;
         }
 
+        Problem* problem = nullptr;
+
         if (vm.count("bool"))
-            BoolTester boolTest = BoolTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
+            if (vm.count("test"))
+                BoolTester boolTest = BoolTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
+            else {
+                problem = new BoolProblem;
+                problem->printGens = true;
+                problem->problemRunner();
+            }
         if (vm.count("parity"))
-            ParityTester parityTest = ParityTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
+            if (vm.count("test"))
+                ParityTester parityTest = ParityTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
+            else {
+                problem = new ParityProblem;
+                problem->printGens = true;
+                problem->problemRunner();
+            }
         if (vm.count("func"))
-            FuncTester funcTest = FuncTester(FuncParam(params[0], params[1], params[2], params[3], params[4], -1));
+            if (vm.count("test"))
+                FuncTester funcTest = FuncTester(FuncParam(params[0], params[1], params[2], params[3], params[4], -1));
+            else {
+                problem = new FuncProblem;
+                problem->printGens = true;
+                problem->problemRunner();
+            }
         if (vm.count("acey"))
-            ADTester adTest = ADTester(ADParam(params[0], params[1], params[2], params[3], params[4]));
+            if (vm.count("test"))
+                ADTester adTest = ADTester(ADParam(params[0], params[1], params[2], params[3], params[4]));
+            else {
+                problem = new ADProblem;
+                problem->printGens = true;
+                problem->problemRunner();
+            }
         if (vm.count("wait"))
-            WaitTester waitTest = WaitTester(WaitParam(params[0], params[1], params[2], params[3], params[4], 1));
+            if (vm.count("test"))
+                WaitTester waitTest = WaitTester(WaitParam(params[0], params[1], params[2], params[3], params[4], 1));
+            else {
+                problem = new WaitProblem;
+                problem->printGens = true;
+                problem->problemRunner();
+            }
+
+        if (vm.count("test"))
+            delete(problem);
     }
     catch(exception& e) {
         cerr << "error: " << e.what() << endl;

@@ -18,7 +18,7 @@ string WaitProblem::evalFunction(int CGPNodeNum) {
     ostringstream oss;
 
     if (!CGPNodeNum) {
-        oss << "Wait time: " << WAIT_TIME << "ms";
+        oss << "Wait time: " << WAIT_TIME << "ns";
         return oss.str();
     }
 
