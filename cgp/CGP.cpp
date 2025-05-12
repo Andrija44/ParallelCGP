@@ -7,10 +7,10 @@ void CGP::generatePopulation(vector<CGPIndividual> &population) {
     // vrijeme za izvodenje cijele funkcije
     Timer genTime("generatePopulationTimer");
 
-    #pragma omp parallel num_threads(omp_get_max_threads())
+    // #pragma omp parallel num_threads(omp_get_max_threads())
     {
         boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
-        #pragma omp for schedule(dynamic)
+        // #pragma omp for schedule(dynamic)
         for (int i = 0; i < populationSize; i++) {
             boost::random::uniform_int_distribution<> operandDis(1, operands);
             boost::random::uniform_int_distribution<> connectionDis(0, rows * columns + inputs - 1);
@@ -89,10 +89,10 @@ void CGP::goldMutate(CGPIndividual parent, vector<CGPIndividual> &population) {
         parent.evaluateUsed();
     population[0] = parent;
 
-    #pragma omp parallel num_threads(omp_get_max_threads())
+    // #pragma omp parallel num_threads(omp_get_max_threads())
     {
         boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
-        #pragma omp for schedule(dynamic)
+        // #pragma omp for schedule(dynamic)
         for (int n = 1; n < populationSize; n++) {
             boost::random::uniform_int_distribution<> nodDis(parent.inputs, static_cast<int>(parent.genes.size()));
             boost::random::uniform_int_distribution<> geneDis(0, 2);

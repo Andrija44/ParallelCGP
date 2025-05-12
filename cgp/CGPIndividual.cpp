@@ -163,10 +163,10 @@ void CGPIndividual::resolveLoops() {
 
     for (int m = 0; m < outputs; m++) {
         while (findLoops(outputGene[m].connection)) {
-            //#pragma omp parallel num_threads(omp_get_max_threads())
+            #pragma omp parallel num_threads(omp_get_max_threads())
             {
                 boost::random::mt19937 gen(chrono::duration_cast<std::chrono::nanoseconds>(chrono::system_clock::now().time_since_epoch()).count() * (omp_get_thread_num() + 1));
-                //#pragma omp for schedule(dynamic)
+                #pragma omp for schedule(dynamic)
                 for (int i = 0; i < branches.size(); i++) {
                     boost::random::uniform_int_distribution<> connectionDis(0, static_cast<int>(genes.size()) - 1);
                     int cell1, cell2, con1, con2, con;
@@ -174,15 +174,15 @@ void CGPIndividual::resolveLoops() {
                     cell1 = branches[i][branches[i].size() - 2];
                     cell2 = branches[i][branches[i].size() - 1];
 
-                    //#pragma omp atomic read
+                    #pragma omp atomic read
                     con1 = genes[cell1].connection1;
-                    //#pragma omp atomic read
+                    #pragma omp atomic read
                     con2 = genes[cell1].connection2;
 
                     if (con1 == cell2) {
                         while (true) {
                             con = connectionDis(gen);
-                            //#pragma omp atomic write
+                            #pragma omp atomic write
                             genes[cell1].connection1 = con;
 
                             if (con < inputs)
@@ -198,7 +198,7 @@ void CGPIndividual::resolveLoops() {
                     else if (con2 == cell2) {
                         while (true) {
                             con = connectionDis(gen);
-                            //#pragma omp atomic write
+                            #pragma omp atomic write
                             genes[cell1].connection2 = con;
                             
                             if (con < inputs)
