@@ -37,6 +37,8 @@ namespace po = boost::program_options;
 
 int main(int ac, char** av) {
     try {
+        int threads = 1;
+
         po::options_description desc("Allowed options");
         desc.add_options()
             ("help,h", "produce help message")
@@ -73,7 +75,7 @@ int main(int ac, char** av) {
         if (vm.count("threads")) {
             if (!PARALLEL_TESTER)
                 throw invalid_argument("Threads are not supported in the sequential version of the program");
-            int threads = vm["threads"].as<int>();
+            threads = vm["threads"].as<int>();
             if (threads < 1)
                 throw invalid_argument("Number of threads must be greater than 0");
             Tester::threadNums.clear();
@@ -86,6 +88,7 @@ int main(int ac, char** av) {
             if (vm.count("test"))
                 BoolTester boolTest = BoolTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
             else {
+                omp_set_num_threads(threads);
                 problem = new BoolProblem;
                 problem->printGens = true;
                 problem->problemRunner();
@@ -94,6 +97,7 @@ int main(int ac, char** av) {
             if (vm.count("test"))
                 ParityTester parityTest = ParityTester(BoolParam(params[0], params[1], params[2], params[3], params[4]));
             else {
+                omp_set_num_threads(threads);
                 problem = new ParityProblem;
                 problem->printGens = true;
                 problem->problemRunner();
@@ -102,6 +106,7 @@ int main(int ac, char** av) {
             if (vm.count("test"))
                 FuncTester funcTest = FuncTester(FuncParam(params[0], params[1], params[2], params[3], params[4], -1));
             else {
+                omp_set_num_threads(threads);
                 problem = new FuncProblem;
                 problem->printGens = true;
                 problem->problemRunner();
@@ -110,6 +115,7 @@ int main(int ac, char** av) {
             if (vm.count("test"))
                 ADTester adTest = ADTester(ADParam(params[0], params[1], params[2], params[3], params[4]));
             else {
+                omp_set_num_threads(threads);
                 problem = new ADProblem;
                 problem->printGens = true;
                 problem->problemRunner();
@@ -118,6 +124,7 @@ int main(int ac, char** av) {
             if (vm.count("test"))
                 WaitTester waitTest = WaitTester(WaitParam(params[0], params[1], params[2], params[3], params[4], 1));
             else {
+                omp_set_num_threads(threads);
                 problem = new WaitProblem;
                 problem->printGens = true;
                 problem->problemRunner();

@@ -4,7 +4,7 @@ import cycler
 import os
 
 threadNums = [1, 2, 4, 8, 16]
-testName = ["Small", "Medium", "Large"]
+testName = ["Small", "Medium", "Large", "Special"]
 testType = ["Simple", "Complex"]
 gens = 1000
 rounds = 10
