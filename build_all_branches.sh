@@ -27,7 +27,7 @@ for BRANCH in $(git branch -r | grep -v "HEAD" | sed 's/origin\///'); do
     git checkout "$BRANCH" || exit 1
 
     # Create a separate folder for the branch
-    BUILD_DIR="build_$BRANCH"
+    BUILD_DIR="$BRANCH"
     if [ -d "$BUILD_DIR" ]; then
         rm -rf "$BUILD_DIR"
     fi

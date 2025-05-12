@@ -30,7 +30,7 @@ for /f "tokens=*" %%B in ('git branch -r ^| findstr /v "HEAD"') do (
     git checkout !BRANCH! || exit /b 1
 
     :: Create a separate folder for the branch
-    set BUILD_DIR=build_!BRANCH!
+    set BUILD_DIR=!BRANCH!
     if exist !BUILD_DIR! (
         rmdir /s /q !BUILD_DIR!
     )
