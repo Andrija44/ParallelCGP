@@ -31,6 +31,7 @@ void WaitProblem::problemSimulator(CGPIndividual& individual, TYPE& fit) {
     function<TYPE(int op, TYPE v1, TYPE v2)> compNode =
         [&](int op, TYPE v1, TYPE v2) { return computeNode(op, v1, v2); };
 
+    #pragma omp parallel for firstprivate(individual) shared(compNode) num_threads(omp_get_max_threads())
     for (int iter = 0; iter < 10; iter++) {
         vector<TYPE> input;
         input.push_back(iter);

@@ -20,6 +20,7 @@ using namespace parallel_cgp;
 namespace po = boost::program_options;
 
 #define OMPCGP
+#define OMPSIM
 
 #if (defined(_OPENMP) && (defined(OMPCGP) || defined(OMPSIM) || defined(OMPRUN)))
 #define BoolTester ParBoolTester
@@ -39,7 +40,7 @@ namespace po = boost::program_options;
 
 int main(int ac, char** av) {
     try {
-        Tester::VERSION_NAME.assign("Cgp");
+        Tester::VERSION_NAME.assign("CgpSim");
 
         po::options_description desc("Allowed options");
         desc.add_options()
@@ -69,7 +70,7 @@ int main(int ac, char** av) {
         }
 
         if (vm.count("version")) {
-            cout << "ParallelCGP version 1.0 OpenMP CGP" << endl;
+            cout << "ParallelCGP version 1.0 OpenMP CGP Simulator" << endl;
             cout << "Author: Andrija Macek" << endl;
             return 2;
         }
