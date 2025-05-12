@@ -39,6 +39,8 @@ namespace po = boost::program_options;
 
 int main(int ac, char** av) {
     try {
+        Tester::VERSION_NAME.assign("Run");
+
         po::options_description desc("Allowed options");
         desc.add_options()
             ("help,h", "produce help message")
@@ -67,7 +69,7 @@ int main(int ac, char** av) {
         }
 
         if (vm.count("version")) {
-            cout << "ParallelCGP version 1.0 Sequential" << endl;
+            cout << "ParallelCGP version 1.0 OpenMP Runner" << endl;
             cout << "Author: Andrija Macek" << endl;
             return 2;
         }
