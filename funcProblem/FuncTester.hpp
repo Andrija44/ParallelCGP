@@ -32,13 +32,15 @@ namespace parallel_cgp {
 	class SeqFuncTester : private Tester
 	{
 	private:
-		std::string funcs[6] = { "smallSimpleSeqFuncTest", "mediumSimpleSeqFuncTest", "largeSimpleSeqFuncTest", "smallComplexSeqFuncTest", "mediumComplexSeqFuncTest", "largeComplexSeqFuncTest" };
-		FuncParam params[6] = { FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
+		std::string funcs[8] = { "smallSimpleSeqFuncTest", "mediumSimpleSeqFuncTest", "largeSimpleSeqFuncTest", "specialSimpleSeqFuncTest", "smallComplexSeqFuncTest", "mediumComplexSeqFuncTest", "largeComplexSeqFuncTest", "specialComplexSeqFuncTest" };
+		FuncParam params[8] = { FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, -1),
 			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1),
+			FuncParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, -1),
-			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1) };
+			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1),
+			FuncParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, -1) };
 		std::function<TYPE(TYPE x, TYPE y)> func[2] = { [](TYPE x, TYPE y) { return (pow(x, 2) + 2 * x * y + y); } , [](TYPE x, TYPE y) { return (pow(x, 3) * sin(y) + 2 * cos(x) * pow(y, 2) + 4 * pow(x, 2) * pow(y, 3) - 3 * sin(x) * cos(y)); } };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int THRESHOLD, std::function<TYPE(TYPE x, TYPE y)> func) {
@@ -80,13 +82,15 @@ namespace parallel_cgp {
 	class ParFuncTester : private Tester
 	{
 	private:
-		std::string funcs[6] = { "smallSimpleParFuncTest", "mediumSimpleParFuncTest", "largeSimpleParFuncTest", "smallComplexParFuncTest", "mediumComplexParFuncTest", "largeComplexParFuncTest" };
-		FuncParam params[6] = { FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
+		std::string funcs[8] = { "smallSimpleParFuncTest", "mediumSimpleParFuncTest", "largeSimpleParFuncTest", "specialSimpleParFuncTest", "smallComplexParFuncTest", "mediumComplexParFuncTest", "largeComplexParFuncTest", "specialComplexParFuncTest" };
+		FuncParam params[8] = { FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, -1),
 			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1),
+			FuncParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, -1),
 			FuncParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, -1),
-			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1) };
+			FuncParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, -1),
+			FuncParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, -1) };
 		std::function<TYPE(TYPE x, TYPE y)> func[2] = { [](TYPE x, TYPE y) { return (pow(x, 2) + 2 * x * y + y); } , [](TYPE x, TYPE y) { return (pow(x, 3) * sin(y) + 2 * cos(x) * pow(y, 2) + 4 * pow(x, 2) * pow(y, 3) - 3 * sin(x) * cos(y)); } };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int THRESHOLD, std::function<TYPE(TYPE x, TYPE y)> func, int THREAD_NUM) {
