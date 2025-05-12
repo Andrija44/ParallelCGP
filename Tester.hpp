@@ -42,24 +42,32 @@ namespace parallel_cgp {
 		const static int MEDIUM_ROWS = 8;
 		/** Broj CGP redova za veliki test. */
 		const static int LARGE_ROWS = 10;
+		/** Broj CGP stupaca za poseban test. */
+		const static int SPECIAL_ROWS = 1;
 		/** Broj CGP stupaca za mali test. */
 		const static int SMALL_COLUMNS = 4;
 		/** Broj CGP stupaca za srednji test. */
 		const static int MEDIUM_COLUMNS = 8;
 		/** Broj CGP stupaca za veliki test. */
 		const static int LARGE_COLUMNS = 10;
+		/** Broj CGP stupaca za poseban test. */
+		const static int SPECIAL_COLUMNS = 100;
 		/** Broj CGP razina unatrag za mali test (CGPIndividual#levelsBack). */
 		const static int SMALL_LEVELS = 0;
 		/** Broj CGP razina unatrag za srednji test (CGPIndividual#levelsBack). */
 		const static int MEDIUM_LEVELS = 1;
 		/** Broj CGP razina unatrag za veliki test (CGPIndividual#levelsBack). */
 		const static int LARGE_LEVELS = 3;
+		/** Broj CGP razina unatrag za poseban test (CGPIndividual#levelsBack). */
+		const static int SPECIAL_LEVELS = 10;
 		/** Velicina populacije za mali test. */
 		const static int SMALL_POP_SIZE = 5;
 		/** Velicina populacije za srednji test. */
 		const static int MEDIUM_POP_SIZE = 8;
 		/** Velicina populacije za veliki test. */
 		const static int LARGE_POP_SIZE = 16;
+		/** Velicina populacije za poseban test. */
+		const static int SPECIAL_POP_SIZE = 5;
 		/** Koje ce se sve kolicine dretvi koristiti u testovima. */
 		inline static std::vector<int> threadNums = { 1, 2, 4, 8, 16 };
 		/**@}*/
