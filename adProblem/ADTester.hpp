@@ -95,7 +95,7 @@ namespace parallel_cgp {
 		 */
 		ParADTester(ADParam customParams) : Tester((customParams.pop == 0) ? "ParADTest" : "CustomParADTest") {
 			if(customParams.pop != 0) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for(int i = 0; i < ROUNDS; i++)
 						test("CustomParADTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, threadNums[t]);
 					return;
@@ -103,7 +103,7 @@ namespace parallel_cgp {
 			}
 
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for (int i = 0; i < ROUNDS; i++) {
 						test(funcs[f] + std::to_string(threadNums[t]) + "T", params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop, threadNums[t]);
 					}

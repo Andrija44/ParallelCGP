@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #ifndef _OPENMP
 #define omp_set_num_threads(threads) 0
@@ -54,7 +55,7 @@ namespace parallel_cgp {
 		/** Velicina populacije za veliki test. */
 		const static int LARGE_POP_SIZE = 16;
 		/** Koje ce se sve kolicine dretvi koristiti u testovima. */
-		inline const static int threadNums[5] = { 1, 2, 4, 8, 16 };
+		inline static std::vector<int> threadNums = { 1, 2, 4, 8, 16 };
 		/**@}*/
 
 		/**

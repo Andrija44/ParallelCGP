@@ -25,12 +25,14 @@ namespace po = boost::program_options;
 #define FuncTester ParFuncTester
 #define ADTester ParADTester
 #define WaitTester ParWaitTester
+#define PARALLEL_TESTER 1
 #else
 #define BoolTester SeqBoolTester
 #define ParityTester SeqParityTester
 #define FuncTester SeqFuncTester
 #define ADTester SeqADTester
 #define WaitTester SeqWaitTester
+#define PARALLEL_TESTER 0
 #endif
 
 int main(int ac, char** av) {
@@ -45,7 +47,9 @@ int main(int ac, char** av) {
             ("func,f", "enable func problem")
             ("acey,a", "enable acey problem")
             ("wait,w", "enable wait problem")
-            ("custom,c", po::value<std::vector<int>>()->multitoken(), "custom test values")
+            ("custom,c", po::value<std::vector<int>>()->multitoken(), "custom test values (number of generations, rows, columns, levels, population size)")
+            ("threads,T", po::value<int>()->default_value(1), "number of threads to use in parallel version (default: 1)")
+            ("version,v", "print version information")
             ;
     
         po::variables_map vm;
@@ -59,6 +63,22 @@ int main(int ac, char** av) {
         if (vm.count("help")) {
             cout << desc << endl;
             return 1;
+        }
+
+        if (vm.count("version")) {
+            cout << "ParallelCGP version 1.0 Sequential" << endl;
+            cout << "Author: Andrija Macek" << endl;
+            return 2;
+        }
+
+        if (vm.count("threads")) {
+            if (!PARALLEL_TESTER)
+                throw invalid_argument("Threads are not supported in the sequential version of the program");
+            int threads = vm["threads"].as<int>();
+            if (threads < 1)
+                throw invalid_argument("Number of threads must be greater than 0");
+            Tester::threadNums.clear();
+            Tester::threadNums.push_back(threads);
         }
 
         Problem* problem = nullptr;

@@ -105,7 +105,7 @@ namespace parallel_cgp {
 		 */
 		ParBoolTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "ParBoolTest" : "CustomParBoolTest") {
 			if(customParams.pop != 0) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for(int i = 0; i < ROUNDS; i++)
 						test("CustomParBoolTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, func[0], threadNums[t]);
 					return;
@@ -113,7 +113,7 @@ namespace parallel_cgp {
 			}
 
 			for (int f = 0; f < (sizeof(boolFuncs) / sizeof(*boolFuncs)); f++) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for (int i = 0; i < ROUNDS; i++) {
 						if (f < 3)
 							test(boolFuncs[f] + std::to_string(threadNums[t]) + "T", params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop, func[0], threadNums[t]);
@@ -194,7 +194,7 @@ namespace parallel_cgp {
 		 */
 		ParParityTester(BoolParam customParams) : Tester((customParams.pop == 0) ? "ParParityTest" : "CustomParParityTest") {
 			if(customParams.pop != 0) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for(int i = 0; i < ROUNDS; i++)
 						test("CustomParParityTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, threadNums[t]);
 					return;
@@ -202,7 +202,7 @@ namespace parallel_cgp {
 			}
 
 			for (int f = 0; f < (sizeof(parityFuncs) / sizeof(*parityFuncs)); f++)
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++)
+				for (int t = 0; t < threadNums.size(); t++)
 					for (int i = 0; i < ROUNDS; i++)
 						test(parityFuncs[f] + std::to_string(threadNums[t]) + "T", params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop, threadNums[t]);
 		}
