@@ -32,10 +32,11 @@ namespace parallel_cgp {
 	class SeqWaitTester : private Tester
 	{
 	private:
-		std::string funcs[3] = { "smallSeqWaitTest", "mediumSeqWaitTest", "largeSeqWaitTest" };
-		WaitParam params[3] = { WaitParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, 1),
+		std::string funcs[4] = { "smallSeqWaitTest", "mediumSeqWaitTest", "largeSeqWaitTest", "specialSeqWaitTest" };
+		WaitParam params[4] = { WaitParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, 1),
 			WaitParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, 1),
-			WaitParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, 1) };
+			WaitParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, 1),
+			WaitParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, 1) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int WAIT_TIME) {
 			Timer testTimer("waitTestTimer");
@@ -73,10 +74,11 @@ namespace parallel_cgp {
 	class ParWaitTester : private Tester
 	{
 	private:
-		std::string funcs[3] = { "smallParWaitTest", "mediumParWaitTest", "largeParWaitTest" };
-		WaitParam params[3] = { WaitParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, 1),
+		std::string funcs[4] = { "smallParWaitTest", "mediumParWaitTest", "largeParWaitTest", "specialParWaitTest" };
+		WaitParam params[4] = { WaitParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE, 1),
 			WaitParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE, 1),
-			WaitParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, 1) };
+			WaitParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE, 1),
+			WaitParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE, 1) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int WAIT_TIME, int THREAD_NUM) {
 			Timer testTimer("waitTestTimer");

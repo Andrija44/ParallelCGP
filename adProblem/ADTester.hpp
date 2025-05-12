@@ -30,10 +30,11 @@ namespace parallel_cgp {
 	class SeqADTester : private Tester
 	{
 	private:
-		std::string funcs[3] = { "smallSeqADTest", "mediumSeqADTest", "largeSeqADTest" };
-		ADParam params[3] = { ADParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string funcs[4] = { "smallSeqADTest", "mediumSeqADTest", "largeSeqADTest", "specialSeqADTest" };
+		ADParam params[4] = { ADParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			ADParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			ADParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			ADParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			ADParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE) {
 			Timer testTimer("adTestTimer");
@@ -71,10 +72,11 @@ namespace parallel_cgp {
 	class ParADTester : private Tester
 	{
 	private:
-		std::string funcs[3] = { "smallParADTest", "mediumParADTest", "largeParADTest" };
-		ADParam params[3] = { ADParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string funcs[4] = { "smallParADTest", "mediumParADTest", "largeParADTest", "specialParADTest" };
+		ADParam params[4] = { ADParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			ADParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			ADParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			ADParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			ADParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int THREAD_NUM) {
 			Timer testTimer("adTestTimer");

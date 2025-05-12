@@ -41,6 +41,7 @@ namespace po = boost::program_options;
 int main(int ac, char** av) {
     try {
         Tester::VERSION_NAME.assign("CgpRun");
+        int threads = 1;
 
         po::options_description desc("Allowed options");
         desc.add_options()

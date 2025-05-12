@@ -29,13 +29,15 @@ namespace parallel_cgp {
 	class SeqBoolTester : private Tester, private BoolProblem
 	{
 	private:
-		std::string boolFuncs[6] = { "smallSimpleSeqBoolTest", "mediumSimpleSeqBoolTest", "largeSimpleSeqBoolTest", "smallComplexSeqBoolTest", "mediumComplexSeqBoolTest", "largeComplexSeqBoolTest" };
-		BoolParam params[6] = { BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string boolFuncs[8] = { "smallSimpleSeqBoolTest", "mediumSimpleSeqBoolTest", "largeSimpleSeqBoolTest", "specialSimpleSeqBoolTest", "smallComplexSeqBoolTest", "mediumComplexSeqBoolTest", "largeComplexSeqBoolTest", "specialComplexSeqBoolTest" };
+		BoolParam params[8] = { BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(Tester::GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(Tester::GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 		std::function<int(std::bitset<INPUTS> in)> func[2] = { [](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & ((in[0] ^ in[4]) | (in[3] & ~in[2])); }, [](std::bitset<INPUTS> in) { return (((in[0] & ~in[1]) | (in[2] ^ in[3])) & ((in[4] | in[5]) & (~in[6] | (in[0] & in[1])))) | (((in[2] & in[3]) | (in[4] ^ in[5])) & ((in[6] | ~in[0]) & (in[1] | in[2]))); } };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, std::function<int(std::bitset<INPUTS> in)> boolFunc) {
@@ -77,13 +79,15 @@ namespace parallel_cgp {
 	class ParBoolTester : private Tester, private BoolProblem
 	{
 	private:
-		std::string boolFuncs[6] = { "smallSimpleParBoolTest", "mediumSimpleParBoolTest", "largeSimpleParBoolTest", "smallComplexParBoolTest", "mediumComplexParBoolTest", "largeComplexParBoolTest" };
-		BoolParam params[6] = { BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string boolFuncs[8] = { "smallSimpleParBoolTest", "mediumSimpleParBoolTest", "largeSimpleParBoolTest", "specialSimpleParBoolTest", "smallComplexParBoolTest", "mediumComplexParBoolTest", "largeComplexParBoolTest", "specialComplexParBoolTest" };
+		BoolParam params[8] = { BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(Tester::GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(Tester::GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			BoolParam(Tester::GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(Tester::GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 		std::function<int(std::bitset<INPUTS> in)> func[2] = { [](std::bitset<INPUTS> in) { return (in[0] | ~in[1]) & ((in[0] ^ in[4]) | (in[3] & ~in[2])); }, [](std::bitset<INPUTS> in) { return (((in[0] & ~in[1]) | (in[2] ^ in[3])) & ((in[4] | in[5]) & (~in[6] | (in[0] & in[1])))) | (((in[2] & in[3]) | (in[4] ^ in[5])) & ((in[6] | ~in[0]) & (in[1] | in[2]))); } };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, std::function<int(std::bitset<INPUTS> in)> boolFunc, int THREAD_NUM) {
@@ -131,10 +135,11 @@ namespace parallel_cgp {
 	class SeqParityTester : private Tester
 	{
 	private:
-		std::string parityFuncs[3] = { "smallSeqParityTest", "mediumSeqParityTest", "largeSeqParityTest" };
-		BoolParam params[3] = { BoolParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string parityFuncs[4] = { "smallSeqParityTest", "mediumSeqParityTest", "largeSeqParityTest", "specialSeqParityTest" };
+		BoolParam params[4] = { BoolParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			BoolParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			BoolParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE) {
 			Timer testTimer("parityTestTimer");
@@ -170,10 +175,11 @@ namespace parallel_cgp {
 	class ParParityTester : private Tester
 	{
 	private:
-		std::string parityFuncs[3] = { "smallParParityTest", "mediumParParityTest", "largeParParityTest" };
-		BoolParam params[3] = { BoolParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
+		std::string parityFuncs[4] = { "smallParParityTest", "mediumParParityTest", "largeParParityTest", "specialParParityTest" };
+		BoolParam params[4] = { BoolParam(GENERATIONS, SMALL_ROWS, SMALL_COLUMNS, SMALL_LEVELS, SMALL_POP_SIZE),
 			BoolParam(GENERATIONS, MEDIUM_ROWS, MEDIUM_COLUMNS, MEDIUM_LEVELS, MEDIUM_POP_SIZE),
-			BoolParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE) };
+			BoolParam(GENERATIONS, LARGE_ROWS, LARGE_COLUMNS, LARGE_LEVELS, LARGE_POP_SIZE),
+			BoolParam(GENERATIONS, SPECIAL_ROWS, SPECIAL_COLUMNS, SPECIAL_LEVELS, SPECIAL_POP_SIZE) };
 
 		void test(std::string testName, int GENERATIONS, int ROWS, int COLUMNS, int LEVELS_BACK, int POPULATION_SIZE, int THREAD_NUM) {
 			Timer testTimer("parityTestTimer");
