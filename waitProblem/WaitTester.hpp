@@ -52,7 +52,13 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		SeqWaitTester() : Tester("SeqWaitTest") {
+		SeqWaitTester(WaitParam customParams) : Tester((customParams.pop == 0) ? "SeqWaitTest" : "CustomSeqWaitTest") {
+			if(customParams.pop != 0) {
+				for(int i = 0; i < ROUNDS; i++)
+					test("CustomSeqWaitTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, customParams.time);
+				return;
+			}
+
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
 				for (int i = 0; i < ROUNDS; i++) {
 					test(funcs[f], params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop, params[f].time);
@@ -89,9 +95,17 @@ namespace parallel_cgp {
 		 * Konstruktor testera koji odmah i pokrece testiranje.<br>
 		 * Parametar ROUNDS je opisan u Tester.
 		 */
-		ParWaitTester() : Tester("ParWaitTest") {
+		ParWaitTester(WaitParam customParams) : Tester((customParams.pop == 0) ? "ParWaitTest" : "CustomParWaitTest") {
+			if(customParams.pop != 0) {
+				for (int t = 0; t < threadNums.size(); t++) {
+					for(int i = 0; i < ROUNDS; i++)
+						test("CustomParWaitTest", customParams.gens, customParams.rows, customParams.cols, customParams.levels, customParams.pop, customParams.time, threadNums[t]);
+					return;
+				}
+			}
+
 			for (int f = 0; f < (sizeof(funcs) / sizeof(*funcs)); f++) {
-				for (int t = 0; t < (sizeof(threadNums) / sizeof(*threadNums)); t++) {
+				for (int t = 0; t < threadNums.size(); t++) {
 					for (int i = 0; i < ROUNDS; i++) {
 						test(funcs[f] + std::to_string(threadNums[t]) + "T", params[f].gens, params[f].rows, params[f].cols, params[f].levels, params[f].pop, params[f].time, threadNums[t]);
 					}
