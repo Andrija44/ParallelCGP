@@ -22,6 +22,12 @@ namespace parallel_cgp {
 		std::string testerName;
 		std::string filename;
 	public:
+		/**
+		 * Naziv verzije programa.
+		 * @note Ova varijabla se koristi za naziv datoteke koja se stvara za svaki tester.
+		 */
+		inline static std::string VERSION_NAME = "";
+
 		/** @name Vrijednosti testera
 		 * Vrijednosti koje se koriste kod razlicitih testova.
 		 */
@@ -63,6 +69,7 @@ namespace parallel_cgp {
 		 * @param[in] testerName Naziv test suitea.
 		 */
 		Tester(std::string testerName) : testerName(testerName), filename(testerName) {
+			filename.append(VERSION_NAME);
 			filename.append(".csv");
 			std::ofstream myFile;
 			myFile.open(filename);

@@ -36,7 +36,6 @@ namespace po = boost::program_options;
 #endif
 
 int main(int ac, char** av) {
-
     try {
         po::options_description desc("Allowed options");
         desc.add_options()
@@ -48,7 +47,7 @@ int main(int ac, char** av) {
             ("acey,a", "enable acey problem")
             ("wait,w", "enable wait problem")
             ("custom,c", po::value<std::vector<int>>()->multitoken(), "custom test values (number of generations, rows, columns, levels, population size)")
-            ("threads,T", po::value<int>()->default_value(1), "number of threads to use in parallel version (default: 1)")
+            ("threads,T", po::value<int>(), "number of threads to use in parallel version")
             ("version,v", "print version information")
             ;
     
