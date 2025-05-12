@@ -19,6 +19,7 @@ using namespace std;
 using namespace parallel_cgp;
 namespace po = boost::program_options;
 
+#define OMPRUN
 #define OMPCGP
 
 #if (defined(_OPENMP) && (defined(OMPCGP) || defined(OMPSIM) || defined(OMPRUN)))
@@ -39,7 +40,7 @@ namespace po = boost::program_options;
 
 int main(int ac, char** av) {
     try {
-        Tester::VERSION_NAME.assign("Cgp");
+        Tester::VERSION_NAME.assign("CgpRun");
 
         po::options_description desc("Allowed options");
         desc.add_options()
@@ -69,7 +70,7 @@ int main(int ac, char** av) {
         }
 
         if (vm.count("version")) {
-            cout << "ParallelCGP version 1.0 OpenMP CGP" << endl;
+            cout << "ParallelCGP version 1.0 OpenMP CGP Runner" << endl;
             cout << "Author: Andrija Macek" << endl;
             return 2;
         }
