@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #ifndef _OPENMP
 #define omp_set_num_threads(threads) 0
@@ -21,6 +22,12 @@ namespace parallel_cgp {
 		std::string testerName;
 		std::string filename;
 	public:
+		/**
+		 * Naziv verzije programa.
+		 * @note Ova varijabla se koristi za naziv datoteke koja se stvara za svaki tester.
+		 */
+		inline static std::string VERSION_NAME = "";
+
 		/** @name Vrijednosti testera
 		 * Vrijednosti koje se koriste kod razlicitih testova.
 		 */
@@ -54,7 +61,7 @@ namespace parallel_cgp {
 		/** Velicina populacije za veliki test. */
 		const static int LARGE_POP_SIZE = 16;
 		/** Koje ce se sve kolicine dretvi koristiti u testovima. */
-		inline const static int threadNums[5] = { 1, 2, 4, 8, 16 };
+		inline static std::vector<int> threadNums = { 1, 2, 4, 8, 16 };
 		/**@}*/
 
 		/**
@@ -62,6 +69,7 @@ namespace parallel_cgp {
 		 * @param[in] testerName Naziv test suitea.
 		 */
 		Tester(std::string testerName) : testerName(testerName), filename(testerName) {
+			filename.append(VERSION_NAME);
 			filename.append(".csv");
 			std::ofstream myFile;
 			myFile.open(filename);
