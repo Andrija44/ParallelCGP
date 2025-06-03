@@ -37,35 +37,35 @@ namespace parallel_cgp {
 		/** Broj generacija po testu. */
 		const static int GENERATIONS = 1000;
 		/** Broj CGP redova za mali test. */
-		const static int SMALL_ROWS = 4;
+		const static int SMALL_ROWS = 8;
 		/** Broj CGP redova za srednji test. */
-		const static int MEDIUM_ROWS = 8;
+		const static int MEDIUM_ROWS = 10;
 		/** Broj CGP redova za veliki test. */
-		const static int LARGE_ROWS = 10;
+		const static int LARGE_ROWS = 12;
 		/** Broj CGP stupaca za poseban test. */
 		const static int SPECIAL_ROWS = 1;
 		/** Broj CGP stupaca za mali test. */
-		const static int SMALL_COLUMNS = 4;
+		const static int SMALL_COLUMNS = 8;
 		/** Broj CGP stupaca za srednji test. */
-		const static int MEDIUM_COLUMNS = 8;
+		const static int MEDIUM_COLUMNS = 10;
 		/** Broj CGP stupaca za veliki test. */
-		const static int LARGE_COLUMNS = 10;
+		const static int LARGE_COLUMNS = 12;
 		/** Broj CGP stupaca za poseban test. */
 		const static int SPECIAL_COLUMNS = 100;
 		/** Broj CGP razina unatrag za mali test (CGPIndividual#levelsBack). */
 		const static int SMALL_LEVELS = 0;
 		/** Broj CGP razina unatrag za srednji test (CGPIndividual#levelsBack). */
-		const static int MEDIUM_LEVELS = 1;
+		const static int MEDIUM_LEVELS = 2;
 		/** Broj CGP razina unatrag za veliki test (CGPIndividual#levelsBack). */
-		const static int LARGE_LEVELS = 3;
+		const static int LARGE_LEVELS = 6;
 		/** Broj CGP razina unatrag za poseban test (CGPIndividual#levelsBack). */
-		const static int SPECIAL_LEVELS = 10;
+		const static int SPECIAL_LEVELS = 5;
 		/** Velicina populacije za mali test. */
 		const static int SMALL_POP_SIZE = 5;
 		/** Velicina populacije za srednji test. */
-		const static int MEDIUM_POP_SIZE = 8;
+		const static int MEDIUM_POP_SIZE = 5;
 		/** Velicina populacije za veliki test. */
-		const static int LARGE_POP_SIZE = 16;
+		const static int LARGE_POP_SIZE = 5;
 		/** Velicina populacije za poseban test. */
 		const static int SPECIAL_POP_SIZE = 5;
 		/** Koje ce se sve kolicine dretvi koristiti u testovima. */
