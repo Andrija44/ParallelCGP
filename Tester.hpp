@@ -37,19 +37,19 @@ namespace parallel_cgp {
 		/** Broj generacija po testu. */
 		const static int GENERATIONS = 1000;
 		/** Broj CGP redova za mali test. */
-		const static int SMALL_ROWS = 8;
+		const static int SMALL_ROWS = 6;
 		/** Broj CGP redova za srednji test. */
-		const static int MEDIUM_ROWS = 10;
+		const static int MEDIUM_ROWS = 6;
 		/** Broj CGP redova za veliki test. */
-		const static int LARGE_ROWS = 12;
+		const static int LARGE_ROWS = 8;
 		/** Broj CGP stupaca za poseban test. */
 		const static int SPECIAL_ROWS = 1;
 		/** Broj CGP stupaca za mali test. */
-		const static int SMALL_COLUMNS = 8;
+		const static int SMALL_COLUMNS = 10;
 		/** Broj CGP stupaca za srednji test. */
-		const static int MEDIUM_COLUMNS = 10;
+		const static int MEDIUM_COLUMNS = 16;
 		/** Broj CGP stupaca za veliki test. */
-		const static int LARGE_COLUMNS = 12;
+		const static int LARGE_COLUMNS = 20;
 		/** Broj CGP stupaca za poseban test. */
 		const static int SPECIAL_COLUMNS = 100;
 		/** Broj CGP razina unatrag za mali test (CGPIndividual#levelsBack). */
@@ -57,7 +57,7 @@ namespace parallel_cgp {
 		/** Broj CGP razina unatrag za srednji test (CGPIndividual#levelsBack). */
 		const static int MEDIUM_LEVELS = 2;
 		/** Broj CGP razina unatrag za veliki test (CGPIndividual#levelsBack). */
-		const static int LARGE_LEVELS = 6;
+		const static int LARGE_LEVELS = 4;
 		/** Broj CGP razina unatrag za poseban test (CGPIndividual#levelsBack). */
 		const static int SPECIAL_LEVELS = 5;
 		/** Velicina populacije za mali test. */
